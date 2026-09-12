@@ -96,7 +96,7 @@ export default function Home() {
               <div className="card-image-wrap">
                 <span className="card-badge">Pillar 01</span>
                 <img
-                  src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=800&q=80"
+                  src="/images/pillar_healthcare.jpg"
                   alt="Sparsha Health Care Center - Naturopathy & Ayurveda"
                 />
               </div>
@@ -119,7 +119,7 @@ export default function Home() {
               <div className="card-image-wrap">
                 <span className="card-badge gold">Pillar 02</span>
                 <img
-                  src="https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=800&q=80"
+                  src="/images/pillar_retreat.jpg"
                   alt="Sparsha Wellness Resort - Ayurvedic Rejuvenation"
                 />
               </div>
@@ -142,7 +142,7 @@ export default function Home() {
               <div className="card-image-wrap">
                 <span className="card-badge">Pillar 03</span>
                 <img
-                  src="https://images.unsplash.com/photo-1512069772995-ec65ed45afd6?auto=format&fit=crop&w=800&q=80"
+                  src="/images/pillar_herbal.jpg"
                   alt="Shustha Herbal Remedies - Ayurvedic Botanicals"
                 />
               </div>
@@ -165,7 +165,7 @@ export default function Home() {
               <div className="card-image-wrap">
                 <span className="card-badge">Pillar 04</span>
                 <img
-                  src="https://images.unsplash.com/photo-1629909613654-28e377c37b09?auto=format&fit=crop&w=800&q=80"
+                  src="/images/pillar_multicare.jpg"
                   alt="Sparsha Multicare Center"
                 />
               </div>
