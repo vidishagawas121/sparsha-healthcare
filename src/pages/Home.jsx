@@ -32,8 +32,8 @@ export default function Home() {
           <div className="split-grid">
             <div className="split-image-wrap">
               <img
-                src="https://images.unsplash.com/photo-1600334089648-b0d9d3028eb2?auto=format&fit=crop&w=1200&q=80"
-                alt="Ayurvedic Shirodhara and botanical wellness at Sparsha"
+                src="/images/ayurveda_shirodhara.jpg"
+                alt="Authentic Ayurvedic Shirodhara and botanical wellness therapy at Sparsha Chikmagalur"
                 loading="lazy"
               />
               <div className="split-accent-frame">
