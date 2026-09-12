@@ -117,7 +117,7 @@ export default function Home() {
             {/* CARD 2: Wellness Resort */}
             <div className="card">
               <div className="card-image-wrap">
-                <span className="card-badge gold">Pillar 02</span>
+                <span className="card-badge">Pillar 02</span>
                 <img
                   src="/images/pillar_retreat.jpg"
                   alt="Sparsha Wellness Resort - Ayurvedic Rejuvenation"
