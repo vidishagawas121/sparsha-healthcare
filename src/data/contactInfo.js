@@ -152,23 +152,27 @@ Hello, I saw this announcement on the Sparsha Notice Board and would like to ${i
 export function generateWhatsAppDietEnquiryUrl(formData) {
   const fullName = `${formData.firstName || ''} ${formData.lastName || ''}`.trim() || formData.name || 'Patient';
   const location = [formData.city, formData.country].filter(Boolean).join(', ') || 'Not specified';
+  const healthFocus = formData.healthGoal || formData.service || 'Personalized Diet Chart & Nutrition Protocol';
+  const dietPref = formData.dietPreference ? `\nDietary Preference: ${formData.dietPreference}` : '';
+  const notesText = formData.notes || formData.message ? `\nSymptoms / Notes: ${formData.notes || formData.message}` : '';
   const dateStr = new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
 
   const message = 
-`SPARSHA HEALTHCARE - NEW DIET CHART & CONSULTATION ENQUIRY
+`SPARSHA HEALTHCARE - PERSONALIZED DIET CHART ENQUIRY
 ------------------------------------
 Patient Name: ${fullName}
-Phone Number: ${formData.phone || formData.mobile || 'Not specified'}
-Email Address: ${formData.email || 'Not specified'}
+Phone: ${formData.phone || formData.mobile || 'Not specified'}
+Email: ${formData.email || 'Not specified'}
 Location: ${location}
+Health Focus / Goal: ${healthFocus}${dietPref}${notesText}
 Date: ${dateStr}
 
-Enquiry Details:
-Hello Doctor / Admin, I have filled up the form on your website to access the Sparsha Diet Charts Library. I would like an enquiry regarding a personalized clinical diet plan and treatment consultation for my health condition.
+Enquiry Message:
+Hello Doctor / Clinical Nutrition Team, I have submitted my details on your website for a customized Ayurvedic & Clinical Diet Plan tailored to my health condition and body constitution.
 
-Please review my details and share the next consultation steps. Thank you!
+Please review my profile and share the personalized diet consultation guidance. Thank you!
 ------------------------------------
-Source: Sparsha Healthcare Portal (Diet Charts Enquiry)`;
+Source: Sparsha Healthcare Portal (Diet Plan Request)`;
 
   return buildWhatsAppUrl(message);
 }

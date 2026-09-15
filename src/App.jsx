@@ -19,7 +19,6 @@ import Contact from './pages/Contact';
 import Admin from './pages/Admin';
 import Articles from './pages/Articles';
 import DietCharts from './pages/DietCharts';
-import DietChartsDownloadFiles from './pages/DietChartsDownloadFiles';
 import Testimonials from './pages/Testimonials';
 import FloatingWhatsApp from './components/FloatingWhatsApp';
 
@@ -55,9 +54,9 @@ export default function App() {
               <Route path="/contact" element={<Contact />} />
               <Route path="/articles" element={<Articles />} />
               <Route path="/diet-charts" element={<DietCharts />} />
-              <Route path="/diet-charts/download-files" element={<DietChartsDownloadFiles />} />
-              <Route path="/diet-charts/download-files/:slug" element={<DietChartsDownloadFiles />} />
-              <Route path="/diet-chart/:slug" element={<DietChartsDownloadFiles />} />
+              <Route path="/diet-charts/download-files" element={<DietCharts />} />
+              <Route path="/diet-charts/download-files/:slug" element={<DietCharts />} />
+              <Route path="/diet-chart/:slug" element={<DietCharts />} />
               <Route path="/testimonials" element={<Testimonials />} />
               <Route path="/admin" element={<Admin />} />
               {/* Fallback */}

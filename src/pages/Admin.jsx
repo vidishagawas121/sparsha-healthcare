@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { getEvents, saveEvents, DEFAULT_EVENTS } from '../data/eventsData';
+import { buildWhatsAppUrl } from '../data/contactInfo';
 import Button from '../components/Button';
 import { 
   ShieldCheck, 
@@ -132,6 +133,23 @@ export default function Admin() {
       }
     } catch (e) {}
   }
+
+  const handleDeleteInquiry = (id) => {
+    if (!window.confirm('Are you sure you want to remove this inquiry from the admin log?')) return;
+    const filtered = inquiries.filter(i => i.id !== id);
+    setInquiries(filtered);
+    try {
+      localStorage.setItem('sparsha_saved_inquiries', JSON.stringify(filtered));
+    } catch (e) {}
+  };
+
+  const handleClearInquiries = () => {
+    if (!window.confirm('Are you sure you want to clear all inquiries from the local admin log?')) return;
+    setInquiries([]);
+    try {
+      localStorage.removeItem('sparsha_saved_inquiries');
+    } catch (e) {}
+  };
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -1196,43 +1214,147 @@ export default function Admin() {
         {/* TAB 2: INQUIRIES LOG */}
         {activeTab === 'inquiries' && (
           <div className="admin-card-box">
-            <h3 style={{ marginBottom: '16px' }}>Client Service Inquiries Log</h3>
-            <p style={{ color: 'var(--color-text-muted)', fontSize: '0.9rem', marginBottom: '24px' }}>
-              Shows recent service and consultation submissions forwarded to WhatsApp.
-            </p>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px', marginBottom: '16px' }}>
+              <div>
+                <h3 style={{ margin: 0, fontSize: '1.3rem' }}>Client Service & Diet Inquiries Log ({inquiries.length})</h3>
+                <p style={{ color: 'var(--color-text-muted)', fontSize: '0.88rem', margin: '4px 0 0 0' }}>
+                  Live record of appointment bookings and personalized diet chart consultation inquiries.
+                </p>
+              </div>
+              {inquiries.length > 0 && (
+                <button
+                  type="button"
+                  onClick={handleClearInquiries}
+                  className="btn"
+                  style={{
+                    background: '#fee2e2',
+                    color: '#991b1b',
+                    border: '1px solid #fecaca',
+                    padding: '6px 14px',
+                    fontSize: '0.82rem',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '6px',
+                    cursor: 'pointer'
+                  }}
+                >
+                  <Trash2 size={13} />
+                  <span>Clear All Log</span>
+                </button>
+              )}
+            </div>
 
             {inquiries.length === 0 ? (
               <div style={{ textAlign: 'center', padding: '40px', color: 'var(--color-text-muted)' }}>
-                No inquiries recorded in this current server session. Test submitting on the Appointment page!
+                No inquiries recorded yet. Submit a form on the Diet Charts or Appointment page to test!
               </div>
             ) : (
               <div style={{ overflowX: 'auto' }}>
                 <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.88rem' }}>
                   <thead>
                     <tr style={{ background: 'var(--color-bg-alt)', borderBottom: '2px solid var(--color-border)', textAlign: 'left' }}>
-                      <th style={{ padding: '12px' }}>ID</th>
-                      <th style={{ padding: '12px' }}>Client</th>
+                      <th style={{ padding: '12px' }}>ID & Date</th>
+                      <th style={{ padding: '12px' }}>Patient</th>
                       <th style={{ padding: '12px' }}>Contact</th>
-                      <th style={{ padding: '12px' }}>Center / Service</th>
-                      <th style={{ padding: '12px' }}>Date Slot</th>
+                      <th style={{ padding: '12px' }}>Service / Goal</th>
+                      <th style={{ padding: '12px' }}>Notes / Symptoms</th>
                       <th style={{ padding: '12px' }}>Status</th>
+                      <th style={{ padding: '12px', textAlign: 'right' }}>Actions</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {inquiries.map((inq) => (
-                      <tr key={inq.id} style={{ borderBottom: '1px solid var(--color-border)' }}>
-                        <td style={{ padding: '12px', fontWeight: 600 }}>{inq.id}</td>
-                        <td style={{ padding: '12px' }}>{inq.name}</td>
-                        <td style={{ padding: '12px' }}>{inq.mobile}<br /><small>{inq.email}</small></td>
-                        <td style={{ padding: '12px' }}>{inq.center}<br /><strong>{inq.service}</strong></td>
-                        <td style={{ padding: '12px' }}>{inq.preferredDate || 'N/A'}<br /><small>{inq.preferredTime}</small></td>
-                        <td style={{ padding: '12px' }}>
-                          <span style={{ background: '#f0fdf4', color: '#166534', padding: '3px 8px', borderRadius: '10px', fontSize: '0.78rem', fontWeight: 600 }}>
-                            {inq.status || 'Forwarded to WhatsApp'}
-                          </span>
-                        </td>
-                      </tr>
-                    ))}
+                    {inquiries.map((inq) => {
+                      const waReplyText = `Hello ${inq.name},\nGreetings from Sparsha Healthcare Group. We have received your consultation enquiry regarding "${inq.service || inq.healthGoal || 'Diet Chart'}". Our clinical team has reviewed your details and we are glad to assist you.`;
+                      const patientWaUrl = inq.mobile ? buildWhatsAppUrl(waReplyText, inq.mobile) : null;
+                      const formattedTime = inq.createdAt ? new Date(inq.createdAt).toLocaleString('en-IN', { dateStyle: 'short', timeStyle: 'short' }) : 'Recent';
+
+                      return (
+                        <tr key={inq.id} style={{ borderBottom: '1px solid var(--color-border)' }}>
+                          <td style={{ padding: '12px' }}>
+                            <div style={{ fontWeight: 700, color: 'var(--color-primary)' }}>{inq.id}</div>
+                            <small style={{ color: 'var(--color-text-muted)' }}>{formattedTime}</small>
+                          </td>
+                          <td style={{ padding: '12px', fontWeight: 600 }}>
+                            {inq.name}
+                            {inq.center && <div style={{ fontSize: '0.78rem', color: 'var(--color-text-muted)', fontWeight: 400 }}>📍 {inq.center}</div>}
+                          </td>
+                          <td style={{ padding: '12px' }}>
+                            <div style={{ fontWeight: 600 }}>{inq.mobile}</div>
+                            <small style={{ color: 'var(--color-text-muted)' }}>{inq.email}</small>
+                          </td>
+                          <td style={{ padding: '12px' }}>
+                            <strong>{inq.service || inq.healthGoal}</strong>
+                            {inq.dietPreference && (
+                              <div style={{ fontSize: '0.78rem', color: 'var(--color-leaf)' }}>
+                                Pref: {inq.dietPreference}
+                              </div>
+                            )}
+                          </td>
+                          <td style={{ padding: '12px', maxWidth: '220px' }}>
+                            <div style={{ fontSize: '0.82rem', color: 'var(--color-text-main)', whiteSpace: 'pre-wrap', maxHeight: '70px', overflowY: 'auto' }}>
+                              {inq.notes || inq.message || 'No extra notes provided'}
+                            </div>
+                          </td>
+                          <td style={{ padding: '12px' }}>
+                            <span style={{
+                              background: inq.status?.includes('WhatsApp') ? '#dcfce7' : '#e0f2fe',
+                              color: inq.status?.includes('WhatsApp') ? '#166534' : '#0369a1',
+                              padding: '4px 8px',
+                              borderRadius: '12px',
+                              fontSize: '0.76rem',
+                              fontWeight: 700,
+                              display: 'inline-block'
+                            }}>
+                              {inq.status || 'Saved to Admin'}
+                            </span>
+                          </td>
+                          <td style={{ padding: '12px', textAlign: 'right' }}>
+                            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '6px' }}>
+                              {patientWaUrl && (
+                                <a
+                                  href={patientWaUrl}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="btn"
+                                  title="Chat with Patient on WhatsApp"
+                                  style={{
+                                    background: '#25D366',
+                                    color: '#ffffff',
+                                    padding: '5px 10px',
+                                    fontSize: '0.78rem',
+                                    fontWeight: 700,
+                                    borderRadius: '4px',
+                                    display: 'inline-flex',
+                                    alignItems: 'center',
+                                    gap: '4px',
+                                    textDecoration: 'none'
+                                  }}
+                                >
+                                  <MessageCircle size={13} />
+                                  <span>WhatsApp</span>
+                                </a>
+                              )}
+                              <button
+                                type="button"
+                                onClick={() => handleDeleteInquiry(inq.id)}
+                                className="btn"
+                                title="Remove Inquiry"
+                                style={{
+                                  background: '#fee2e2',
+                                  color: '#991b1b',
+                                  padding: '5px 8px',
+                                  fontSize: '0.78rem',
+                                  border: '1px solid #fecaca',
+                                  cursor: 'pointer'
+                                }}
+                              >
+                                <Trash2 size={13} />
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      );
+                    })}
                   </tbody>
                 </table>
               </div>
