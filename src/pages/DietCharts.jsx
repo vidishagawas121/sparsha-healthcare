@@ -4,7 +4,7 @@ import Hero from '../components/Hero';
 import SectionTitle from '../components/SectionTitle';
 import Button from '../components/Button';
 import { DIET_CHARTS } from '../data/dietChartsData';
-import { buildWhatsAppUrl, CONTACT_INFO } from '../data/contactInfo';
+import { buildWhatsAppUrl, CONTACT_INFO, generateWhatsAppDietEnquiryUrl } from '../data/contactInfo';
 import { 
   Clock, 
   CheckCircle2, 
@@ -107,26 +107,51 @@ export default function DietCharts() {
 
     setIsSubmitting(true);
 
-    try {
-      // Persist in localStorage so returning visitors don't have to re-enter
-      localStorage.setItem('sparsha_diet_lead', JSON.stringify(formData));
+    const fullName = `${formData.firstName} ${formData.lastName}`.trim();
+    const locationStr = [formData.city, formData.country].filter(Boolean).join(', ');
+    const formattedDate = new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
 
-      // Optional backend logging
-      await fetch('/api/inquiries', {
+    const newInquiry = {
+      id: 'INQ-DIET-' + Math.floor(100000 + Math.random() * 900000),
+      name: fullName,
+      email: formData.email,
+      mobile: formData.phone,
+      center: locationStr || 'India',
+      service: 'Diet Charts Library & Clinical Nutrition Enquiry',
+      preferredDate: formattedDate,
+      preferredTime: 'Instant Access',
+      message: `Patient ${fullName} from ${locationStr} filled the Diet Charts form and requested personalized consultation enquiry.`,
+      status: 'Forwarded to WhatsApp',
+      createdAt: new Date().toISOString()
+    };
+
+    // 1. Persist lead and admin inquiry in localStorage
+    try {
+      localStorage.setItem('sparsha_diet_lead', JSON.stringify(formData));
+      const existingInqs = JSON.parse(localStorage.getItem('sparsha_saved_inquiries') || '[]');
+      localStorage.setItem('sparsha_saved_inquiries', JSON.stringify([newInquiry, ...existingInqs.filter(i => i.email !== formData.email)]));
+    } catch (e) {
+      // offline safe
+    }
+
+    // 2. Dispatch to Admin backend endpoints (/api/appointments and /api/inquiries)
+    try {
+      await fetch('/api/appointments', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name: `${formData.firstName} ${formData.lastName}`.trim(),
-          email: formData.email,
-          mobile: formData.phone,
-          service: 'Diet Charts Library Access',
-          center: `${formData.city}, ${formData.country}`,
-          preferredDate: new Date().toLocaleDateString('en-IN'),
-          preferredTime: 'Instant Access'
-        })
+        body: JSON.stringify(newInquiry)
       }).catch(() => {});
     } catch (err) {
       // offline safe
+    }
+
+    // 3. Generate direct WhatsApp URL & launch WhatsApp chat with Admin / Doctor
+    const whatsappUrl = generateWhatsAppDietEnquiryUrl(formData);
+    try {
+      localStorage.setItem('sparsha_diet_last_wa_url', whatsappUrl);
+      window.open(whatsappUrl, '_blank');
+    } catch (err) {
+      // popup block fallback
     }
 
     setTimeout(() => {

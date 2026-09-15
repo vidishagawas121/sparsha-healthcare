@@ -20,6 +20,32 @@ export default function Contact() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    const newInquiry = {
+      id: 'INQ-CNT-' + Math.floor(100000 + Math.random() * 900000),
+      name: formData.name,
+      email: formData.email,
+      mobile: formData.phone || 'Not specified',
+      center: 'Online / Contact Page',
+      service: formData.subject || 'General Enquiry',
+      preferredDate: new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }),
+      preferredTime: 'Any Time',
+      message: formData.message,
+      status: 'Forwarded to WhatsApp',
+      createdAt: new Date().toISOString()
+    };
+
+    // Save to Admin inquiry store
+    try {
+      const existingInqs = JSON.parse(localStorage.getItem('sparsha_saved_inquiries') || '[]');
+      localStorage.setItem('sparsha_saved_inquiries', JSON.stringify([newInquiry, ...existingInqs]));
+      fetch('/api/appointments', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(newInquiry)
+      }).catch(() => {});
+    } catch (err) {}
+
     const msg = `SPARSHA HEALTHCARE - GENERAL ENQUIRY\n------------------------------------\nName: ${formData.name}\nPhone: ${formData.phone || 'Not specified'}\nEmail: ${formData.email}\nTopic: ${formData.subject}\n\nMessage:\n${formData.message}\n------------------------------------\nPlease get back to me with details. Thank you.`;
     const url = buildWhatsAppUrl(msg);
     setWhatsappUrl(url);

@@ -4,7 +4,7 @@ import {
   ENGLISH_DIET_CHARTS, 
   getDietChartBySlug 
 } from '../data/dietChartsData';
-import { buildWhatsAppUrl } from '../data/contactInfo';
+import { buildWhatsAppUrl, generateWhatsAppDietEnquiryUrl } from '../data/contactInfo';
 import { 
   Clock, 
   CheckCircle2, 
@@ -118,16 +118,44 @@ export default function DietChartsDownloadFiles() {
       {/* Main Download Container */}
       <div className="container" style={{ padding: '32px 20px 80px 20px' }}>
         
-        {/* Welcome greeting banner for registered user */}
+        {/* Welcome greeting banner for registered user with WhatsApp enquiry status */}
         {userData?.firstName && (
           <div className="diet-user-welcome-badge">
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
               <ShieldCheck size={18} color="#166534" />
               <span>
-                Verified Access for <strong>{userData.firstName} {userData.lastName}</strong> ({userData.email})
+                Verified Registration for <strong>{userData.firstName} {userData.lastName}</strong> ({userData.email}) • Logged to Admin
               </span>
             </div>
-            <span className="diet-user-badge-tag">Full Access Unlocked</span>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
+              <button
+                type="button"
+                onClick={() => {
+                  const url = generateWhatsAppDietEnquiryUrl(userData);
+                  window.open(url, '_blank');
+                }}
+                className="btn"
+                style={{
+                  background: '#25D366',
+                  color: '#ffffff',
+                  padding: '5px 14px',
+                  fontSize: '0.82rem',
+                  fontWeight: 700,
+                  borderRadius: '16px',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '6px',
+                  border: 'none',
+                  cursor: 'pointer',
+                  boxShadow: '0 2px 6px rgba(37, 211, 102, 0.3)'
+                }}
+                title="Send your diet consultation enquiry directly to Sparsha on WhatsApp"
+              >
+                <MessageCircle size={14} />
+                <span>Send Enquiry on WhatsApp</span>
+              </button>
+              <span className="diet-user-badge-tag">Library Unlocked</span>
+            </div>
           </div>
         )}
 

@@ -117,6 +117,25 @@ export default function Appointment() {
     setWhatsappUrl(generatedWaUrl);
 
     try {
+      const inqObj = {
+        id: 'APT-' + Math.floor(100000 + Math.random() * 900000),
+        name: formData.name,
+        email: formData.email,
+        mobile: formData.mobile,
+        center: formData.center || 'Main Center',
+        service: formData.service || inquiryType,
+        preferredDate: formData.preferredDate || new Date().toLocaleDateString('en-IN'),
+        preferredTime: formData.preferredTime || 'Any Time',
+        message: formData.message || '',
+        status: 'Forwarded to WhatsApp',
+        createdAt: new Date().toISOString()
+      };
+
+      try {
+        const existingInqs = JSON.parse(localStorage.getItem('sparsha_saved_inquiries') || '[]');
+        localStorage.setItem('sparsha_saved_inquiries', JSON.stringify([inqObj, ...existingInqs]));
+      } catch (e) {}
+
       // Background log to Express server
       await fetch('/api/appointments', {
         method: 'POST',

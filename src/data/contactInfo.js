@@ -146,3 +146,31 @@ Hello, I saw this announcement on the Sparsha Notice Board and would like to ${i
   return buildWhatsAppUrl(message);
 }
 
+/**
+ * Generates WhatsApp URL for Diet Charts form submission & consultation enquiry
+ */
+export function generateWhatsAppDietEnquiryUrl(formData) {
+  const fullName = `${formData.firstName || ''} ${formData.lastName || ''}`.trim() || formData.name || 'Patient';
+  const location = [formData.city, formData.country].filter(Boolean).join(', ') || 'Not specified';
+  const dateStr = new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
+
+  const message = 
+`SPARSHA HEALTHCARE - NEW DIET CHART & CONSULTATION ENQUIRY
+------------------------------------
+Patient Name: ${fullName}
+Phone Number: ${formData.phone || formData.mobile || 'Not specified'}
+Email Address: ${formData.email || 'Not specified'}
+Location: ${location}
+Date: ${dateStr}
+
+Enquiry Details:
+Hello Doctor / Admin, I have filled up the form on your website to access the Sparsha Diet Charts Library. I would like an enquiry regarding a personalized clinical diet plan and treatment consultation for my health condition.
+
+Please review my details and share the next consultation steps. Thank you!
+------------------------------------
+Source: Sparsha Healthcare Portal (Diet Charts Enquiry)`;
+
+  return buildWhatsAppUrl(message);
+}
+
+

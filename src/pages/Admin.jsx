@@ -99,13 +99,34 @@ export default function Admin() {
 
   async function loadRecentLogs() {
     try {
-      const apptRes = await fetch('/api/appointments');
-      if (apptRes.ok) {
+      let combinedInqs = [];
+      try {
+        const localInqs = JSON.parse(localStorage.getItem('sparsha_saved_inquiries') || '[]');
+        if (Array.isArray(localInqs)) {
+          combinedInqs = [...localInqs];
+        }
+      } catch (err) {}
+
+      const apptRes = await fetch('/api/appointments').catch(() => null);
+      if (apptRes && apptRes.ok) {
         const apptData = await apptRes.json();
-        setInquiries(apptData);
+        if (Array.isArray(apptData)) {
+          const knownIds = new Set(combinedInqs.map(i => i.id));
+          for (const item of apptData) {
+            if (!knownIds.has(item.id)) {
+              combinedInqs.push(item);
+              knownIds.add(item.id);
+            }
+          }
+        }
       }
-      const orderRes = await fetch('/api/orders');
-      if (orderRes.ok) {
+
+      // Sort newest first
+      combinedInqs.sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0));
+      setInquiries(combinedInqs);
+
+      const orderRes = await fetch('/api/orders').catch(() => null);
+      if (orderRes && orderRes.ok) {
         const orderData = await orderRes.json();
         setOrders(orderData);
       }

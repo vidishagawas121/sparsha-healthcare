@@ -253,20 +253,20 @@ app.delete('/api/events/:id', (req, res) => {
 });
 
 // Appointment booking & WhatsApp inquiry endpoint
-app.post('/api/appointments', (req, res) => {
+const handleInquiryPost = (req, res) => {
   const { name, mobile, email, center, service, preferredDate, preferredTime, message } = req.body;
   const newAppointment = {
-    id: 'APT-' + Math.floor(100000 + Math.random() * 900000),
+    id: req.body.id || ('APT-' + Math.floor(100000 + Math.random() * 900000)),
     name,
     mobile,
     email,
     center,
-    service,
+    service: service || 'General Enquiry',
     preferredDate,
     preferredTime,
     message,
-    status: 'Forwarded to WhatsApp',
-    createdAt: new Date().toISOString()
+    status: req.body.status || 'Forwarded to WhatsApp',
+    createdAt: req.body.createdAt || new Date().toISOString()
   };
   mockAppointments.unshift(newAppointment);
   res.json({
@@ -275,9 +275,12 @@ app.post('/api/appointments', (req, res) => {
     appointmentId: newAppointment.id,
     data: newAppointment
   });
-});
+};
 
-app.get('/api/appointments', (req, res) => {
+app.post('/api/appointments', handleInquiryPost);
+app.post('/api/inquiries', handleInquiryPost);
+
+app.get(['/api/appointments', '/api/inquiries'], (req, res) => {
   res.json(mockAppointments);
 });
 
