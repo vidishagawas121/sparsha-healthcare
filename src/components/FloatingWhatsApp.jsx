@@ -9,38 +9,10 @@ export default function FloatingWhatsApp() {
   const waUrl = buildWhatsAppUrl(defaultMessage);
 
   return (
-    <div
-      className="floating-whatsapp-container"
-      style={{
-        position: 'fixed',
-        bottom: '28px',
-        right: '28px',
-        zIndex: 9999,
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'flex-end',
-        gap: '10px'
-      }}
-    >
+    <div className="floating-whatsapp-container">
       {/* Friendly Tooltip Bubble */}
       {showTooltip && (
-        <div
-          style={{
-            background: '#ffffff',
-            color: 'var(--color-text-main)',
-            padding: '10px 14px',
-            borderRadius: '16px',
-            boxShadow: '0 4px 20px rgba(0,0,0,0.15)',
-            border: '1px solid rgba(0,0,0,0.06)',
-            fontSize: '0.85rem',
-            fontWeight: 500,
-            display: 'flex',
-            alignItems: 'center',
-            gap: '10px',
-            maxWidth: '240px',
-            animation: 'fadeIn 0.3s ease-in-out'
-          }}
-        >
+        <div className="floating-whatsapp-tooltip">
           <span>Need help? Chat with our care concierge on WhatsApp</span>
           <button
             onClick={() => setShowTooltip(false)}
@@ -49,7 +21,8 @@ export default function FloatingWhatsApp() {
               border: 'none',
               color: 'var(--color-text-muted)',
               cursor: 'pointer',
-              padding: '2px'
+              padding: '2px',
+              flexShrink: 0
             }}
             aria-label="Close tooltip"
           >
@@ -64,30 +37,9 @@ export default function FloatingWhatsApp() {
         target="_blank"
         rel="noopener noreferrer"
         aria-label="Chat on WhatsApp with Sparsha Healthcare"
-        style={{
-          width: '58px',
-          height: '58px',
-          borderRadius: '50%',
-          background: '#25D366',
-          color: '#ffffff',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          boxShadow: '0 6px 20px rgba(37, 211, 102, 0.45)',
-          cursor: 'pointer',
-          transition: 'transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.25s ease',
-          textDecoration: 'none'
-        }}
-        onMouseEnter={(e) => {
-          e.currentTarget.style.transform = 'scale(1.08)';
-          e.currentTarget.style.boxShadow = '0 8px 25px rgba(37, 211, 102, 0.6)';
-        }}
-        onMouseLeave={(e) => {
-          e.currentTarget.style.transform = 'scale(1)';
-          e.currentTarget.style.boxShadow = '0 6px 20px rgba(37, 211, 102, 0.45)';
-        }}
+        className="floating-whatsapp-btn"
       >
-        <MessageCircle size={32} />
+        <MessageCircle size={30} />
       </a>
     </div>
   );

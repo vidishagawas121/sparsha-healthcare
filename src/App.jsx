@@ -38,9 +38,9 @@ export default function App() {
     <CartProvider>
       <Router>
         <ScrollToTop />
-        <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', width: '100%', maxWidth: '100%', overflowX: 'hidden' }}>
           <Navbar />
-          <main style={{ flex: 1 }}>
+          <main style={{ flex: 1, width: '100%', maxWidth: '100%', overflowX: 'hidden' }}>
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/about" element={<About />} />

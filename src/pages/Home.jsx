@@ -58,7 +58,7 @@ export default function Home() {
                 We bridge the wisdom of traditional therapeutic disciplines with rigorous functional diagnostics. Rather than addressing symptoms in isolation, we walk beside you on a complete journey to restore internal balance, physical vitality, and deep mental calm.
               </p>
 
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '36px' }}>
+              <div className="home-usp-grid">
                 <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                   <CheckCircle2 size={18} color="var(--color-leaf)" />
                   <span style={{ fontWeight: 600, fontSize: '0.95rem' }}>Personalized Protocols</span>

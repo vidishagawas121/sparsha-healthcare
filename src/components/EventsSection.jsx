@@ -67,7 +67,7 @@ export default function EventsSection() {
             <div className="eyebrow-tag" style={{ marginBottom: '10px' }}>
               <Sparkles size={14} color="var(--color-gold)" /> Seasonal Gatherings & Retreats
             </div>
-            <h2 style={{ fontSize: '2.5rem', marginBottom: '8px', lineHeight: '1.2' }}>
+            <h2 style={{ fontSize: 'clamp(1.75rem, 5vw, 2.5rem)', marginBottom: '8px', lineHeight: '1.2' }}>
               Upcoming Wellness Events
             </h2>
             <p style={{ color: 'var(--color-text-muted)', fontSize: '1.05rem', maxWidth: '640px' }}>
