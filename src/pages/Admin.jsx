@@ -506,12 +506,12 @@ export default function Admin() {
     <div className="admin-portal-page" style={{ padding: '48px 0 96px 0', background: '#f8faf9' }}>
       <div className="container">
         {/* Admin Header */}
-        <div style={{ background: '#ffffff', borderRadius: 'var(--radius-md)', padding: '24px 32px', border: '1px solid var(--color-border)', marginBottom: '32px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px', boxShadow: 'var(--shadow-sm)' }}>
+        <div className="admin-header-card">
           <div>
             <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', color: 'var(--color-gold)', fontSize: '0.82rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '4px' }}>
               <ShieldCheck size={16} /> Sparsha Administrative Console
             </div>
-            <h1 style={{ fontSize: '1.8rem', margin: 0 }}>
+            <h1 className="admin-header-title">
               Events & Communications Management
             </h1>
             <div style={{ fontSize: '0.88rem', color: 'var(--color-text-muted)', marginTop: '4px' }}>
@@ -519,7 +519,7 @@ export default function Admin() {
             </div>
           </div>
 
-          <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+          <div className="admin-header-actions">
             <Link
               to="/"
               target="_blank"
@@ -552,23 +552,10 @@ export default function Admin() {
         </div>
 
         {/* Dashboard Navigation Tabs */}
-        <div style={{ display: 'flex', gap: '12px', marginBottom: '28px', borderBottom: '1px solid var(--color-border)', paddingBottom: '12px' }}>
+        <div className="admin-nav-tabs">
           <button
             type="button"
-            onClick={() => setActiveTab('events')}
-            style={{
-              background: activeTab === 'events' ? 'var(--color-primary)' : 'transparent',
-              color: activeTab === 'events' ? '#ffffff' : 'var(--color-text-main)',
-              border: 'none',
-              padding: '10px 20px',
-              borderRadius: '20px',
-              fontWeight: 600,
-              fontSize: '0.92rem',
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '8px'
-            }}
+            onClick={() => setActiveTab('events')} className="admin-nav-tab-btn" style={{ background: activeTab === 'events' ? 'var(--color-primary)' : 'transparent', color: activeTab === 'events' ? '#ffffff' : 'var(--color-text-main)' }}
           >
             <Bell size={16} />
             <span>Notice Board & Announcements ({events.length})</span>
@@ -576,20 +563,7 @@ export default function Admin() {
 
           <button
             type="button"
-            onClick={() => setActiveTab('inquiries')}
-            style={{
-              background: activeTab === 'inquiries' ? 'var(--color-primary)' : 'transparent',
-              color: activeTab === 'inquiries' ? '#ffffff' : 'var(--color-text-main)',
-              border: 'none',
-              padding: '10px 20px',
-              borderRadius: '20px',
-              fontWeight: 600,
-              fontSize: '0.92rem',
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '8px'
-            }}
+            onClick={() => setActiveTab('inquiries')} className="admin-nav-tab-btn" style={{ background: activeTab === 'inquiries' ? 'var(--color-primary)' : 'transparent', color: activeTab === 'inquiries' ? '#ffffff' : 'var(--color-text-main)' }}
           >
             <MessageCircle size={16} />
             <span>Service Enquiries Log</span>
@@ -597,20 +571,7 @@ export default function Admin() {
 
           <button
             type="button"
-            onClick={() => setActiveTab('orders')}
-            style={{
-              background: activeTab === 'orders' ? 'var(--color-primary)' : 'transparent',
-              color: activeTab === 'orders' ? '#ffffff' : 'var(--color-text-main)',
-              border: 'none',
-              padding: '10px 20px',
-              borderRadius: '20px',
-              fontWeight: 600,
-              fontSize: '0.92rem',
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '8px'
-            }}
+            onClick={() => setActiveTab('orders')} className="admin-nav-tab-btn" style={{ background: activeTab === 'orders' ? 'var(--color-primary)' : 'transparent', color: activeTab === 'orders' ? '#ffffff' : 'var(--color-text-main)' }}
           >
             <Package size={16} />
             <span>WhatsApp Orders Log</span>
@@ -619,9 +580,9 @@ export default function Admin() {
 
         {/* TAB 1: NOTICE BOARD & EVENTS MANAGER */}
         {activeTab === 'events' && (
-          <div style={{ display: 'grid', gridTemplateColumns: '1.15fr 1fr', gap: '32px', alignItems: 'start' }}>
+          <div className="admin-events-grid">
             {/* Left: Create / Edit Notice or Event Form */}
-            <div style={{ background: '#ffffff', padding: '32px', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', boxShadow: 'var(--shadow-sm)' }}>
+            <div className="admin-card-box">
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px', borderBottom: '1px solid var(--color-border)', paddingBottom: '14px' }}>
                 <div>
                   <h3 style={{ margin: 0, display: 'flex', alignItems: 'center', gap: '8px', fontSize: '1.3rem', color: 'var(--color-primary)' }}>
@@ -1251,7 +1212,7 @@ export default function Admin() {
 
         {/* TAB 2: INQUIRIES LOG */}
         {activeTab === 'inquiries' && (
-          <div style={{ background: '#ffffff', padding: '32px', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)' }}>
+          <div className="admin-card-box">
             <h3 style={{ marginBottom: '16px' }}>Client Service Inquiries Log</h3>
             <p style={{ color: 'var(--color-text-muted)', fontSize: '0.9rem', marginBottom: '24px' }}>
               Shows recent service and consultation submissions forwarded to WhatsApp.
