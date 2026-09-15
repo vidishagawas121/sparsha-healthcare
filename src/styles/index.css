@@ -2897,3 +2897,242 @@ button, input, select, textarea {
     display: inline !important;
   }
 }
+
+/* ==========================================================================
+   DIET CHARTS DOWNLOAD & LEAD FORM (drmanojjohnson.com style)
+   ========================================================================== */
+
+.diet-lead-section {
+  padding: 48px 0 64px 0;
+  background: #ffffff;
+}
+
+.diet-lead-intro {
+  max-width: 960px;
+  margin: 0 auto 48px auto;
+  text-align: center;
+  font-size: 1.08rem;
+  line-height: 1.8;
+  color: #374151;
+}
+
+.diet-lead-intro strong {
+  color: var(--color-primary);
+  font-weight: 700;
+}
+
+.diet-lead-split {
+  display: grid;
+  grid-template-columns: 1fr 1.15fr;
+  gap: 48px;
+  align-items: stretch;
+  background: #ffffff;
+}
+
+.diet-lead-image-col {
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  min-height: 480px;
+  background: #f3f4f6;
+}
+
+.diet-lead-image-col img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.diet-lead-form-col {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.diet-lead-title {
+  font-size: 2.3rem;
+  font-weight: 700;
+  color: #0b4f8a;
+  margin-bottom: 14px;
+  letter-spacing: -0.01em;
+  font-family: var(--font-sans);
+}
+
+.diet-lead-desc {
+  font-size: 0.98rem;
+  line-height: 1.6;
+  color: #4b5563;
+  margin-bottom: 24px;
+}
+
+.diet-form-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.diet-form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.diet-form-label {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.diet-form-label .required-star {
+  color: #ef4444;
+  margin-left: 2px;
+}
+
+.diet-form-input {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  font-size: 0.92rem;
+  color: #111827;
+  background: #ffffff;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  box-sizing: border-box;
+  font-family: inherit;
+}
+
+.diet-form-input:focus {
+  border-color: #0047ab;
+  box-shadow: 0 0 0 3px rgba(0, 71, 171, 0.15);
+}
+
+.diet-form-input::placeholder {
+  color: #9ca3af;
+}
+
+.diet-submit-btn {
+  width: 100%;
+  background: #0047ab;
+  color: #ffffff;
+  border: none;
+  border-radius: 4px;
+  padding: 15px 24px;
+  font-size: 0.96rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+  box-sizing: border-box;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0, 71, 171, 0.25);
+}
+
+.diet-submit-btn:hover {
+  background: #003785;
+  box-shadow: 0 6px 16px rgba(0, 71, 171, 0.35);
+}
+
+.diet-submit-btn:active {
+  transform: scale(0.99);
+}
+
+.diet-unlocked-banner {
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  border-radius: var(--radius-md);
+  padding: 20px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.diet-preview-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+  margin-top: 36px;
+}
+
+.diet-preview-card {
+  background: var(--color-bg-alt);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 20px;
+  text-align: center;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  cursor: pointer;
+}
+
+.diet-preview-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
+  border-color: var(--color-gold);
+}
+
+@media (max-width: 900px) {
+  .diet-lead-split {
+    grid-template-columns: 1fr !important;
+    gap: 28px !important;
+  }
+  .diet-lead-image-col {
+    min-height: unset !important;
+    height: 280px !important;
+  }
+  .diet-lead-title {
+    font-size: 1.85rem !important;
+  }
+  .diet-form-grid-2 {
+    grid-template-columns: 1fr !important;
+    gap: 14px !important;
+    margin-bottom: 14px !important;
+  }
+  .diet-lead-intro {
+    font-size: 0.98rem !important;
+    margin-bottom: 32px !important;
+  }
+}
+
+/* Print Styles for Clinical PDF Generation */
+@media print {
+  header,
+  footer,
+  .floating-whatsapp-container,
+  .diet-lead-section,
+  .hero,
+  .diet-charts-tabs-wrapper,
+  .btn,
+  button {
+    display: none !important;
+  }
+  body, .diet-charts-page, .container {
+    background: #ffffff !important;
+    color: #000000 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+  .diet-chart-container {
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+  .diet-foods-grid {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 20px !important;
+  }
+  .diet-schedule-row {
+    break-inside: avoid;
+  }
+}
+

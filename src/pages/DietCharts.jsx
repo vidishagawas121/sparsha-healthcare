@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Hero from '../components/Hero';
 import SectionTitle from '../components/SectionTitle';
 import Button from '../components/Button';
@@ -11,44 +11,435 @@ import {
   Printer, 
   MessageCircle, 
   Sparkles, 
-  Heart, 
   AlertCircle,
   Download,
-  Share2,
-  ExternalLink
+  ExternalLink,
+  BookOpen,
+  Lock,
+  Unlock,
+  Check,
+  ArrowDown,
+  UserCheck
 } from 'lucide-react';
+
+const COUNTRIES = [
+  'India',
+  'United Arab Emirates',
+  'United States',
+  'United Kingdom',
+  'Australia',
+  'Canada',
+  'Singapore',
+  'Malaysia',
+  'Germany',
+  'Saudi Arabia',
+  'Kuwait',
+  'Qatar',
+  'Oman',
+  'Bahrain',
+  'New Zealand',
+  'South Africa',
+  'Other'
+];
 
 export default function DietCharts() {
   const [activeChartId, setActiveChartId] = useState(DIET_CHARTS[0].id);
+  const [hasAccess, setHasAccess] = useState(false);
+  const [formData, setFormData] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    phone: '',
+    country: 'India',
+    city: ''
+  });
+  const [errors, setErrors] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showEditForm, setShowEditForm] = useState(false);
+
+  const libraryRef = useRef(null);
+  const formRef = useRef(null);
+
+  // Check if user already submitted lead previously
+  useEffect(() => {
+    try {
+      const savedLead = localStorage.getItem('sparsha_diet_lead');
+      if (savedLead) {
+        const parsed = JSON.parse(savedLead);
+        if (parsed && parsed.firstName) {
+          setFormData(parsed);
+          setHasAccess(true);
+        }
+      }
+    } catch (e) {
+      // safe fallback
+    }
+  }, []);
 
   const currentChart = DIET_CHARTS.find(c => c.id === activeChartId) || DIET_CHARTS[0];
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+    if (errors[name]) {
+      setErrors(prev => ({ ...prev, [name]: '' }));
+    }
+  };
+
+  const handleFormSubmit = async (e) => {
+    e.preventDefault();
+
+    // Validate fields
+    const newErrors = {};
+    if (!formData.firstName.trim()) newErrors.firstName = 'First name is required';
+    if (!formData.lastName.trim()) newErrors.lastName = 'Last name is required';
+    if (!formData.email.trim() || !formData.email.includes('@')) newErrors.email = 'Valid email is required';
+    if (!formData.phone.trim() || formData.phone.length < 8) newErrors.phone = 'Valid phone number is required';
+    if (!formData.country.trim()) newErrors.country = 'Please select your country';
+    if (!formData.city.trim()) newErrors.city = 'City name is required';
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      // Persist in localStorage so returning visitors don't have to re-enter
+      localStorage.setItem('sparsha_diet_lead', JSON.stringify(formData));
+
+      // Optional backend logging
+      await fetch('/api/inquiries', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: `${formData.firstName} ${formData.lastName}`.trim(),
+          email: formData.email,
+          mobile: formData.phone,
+          service: 'Diet Charts Library Access',
+          center: `${formData.city}, ${formData.country}`,
+          preferredDate: new Date().toLocaleDateString('en-IN'),
+          preferredTime: 'Instant Access'
+        })
+      }).catch(() => {});
+    } catch (err) {
+      // offline safe
+    }
+
+    setTimeout(() => {
+      setIsSubmitting(false);
+      setHasAccess(true);
+      setShowEditForm(false);
+      if (libraryRef.current) {
+        libraryRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }, 400);
+  };
 
   const handlePrint = () => {
     window.print();
   };
 
   const handleWhatsAppDietRequest = (chart) => {
-    const message = `SPARSHA HEALTHCARE - DIET REGIMEN ENQUIRY\n------------------------------------\nProtocol: ${chart.title}\nCategory: ${chart.category}\n\nHello Doctor, I am reviewing this dietary protocol on your website. I would like a personalized diet consultation tailored to my body type and health goals. Thank you.`;
+    const userSignature = formData.firstName ? `\nPatient Name: ${formData.firstName} ${formData.lastName} (${formData.city}, ${formData.country})` : '';
+    const message = `SPARSHA HEALTHCARE - DIET REGIMEN CONSULTATION\n------------------------------------\nProtocol: ${chart.title}\nCategory: ${chart.category}${userSignature}\n\nHello Doctor, I have accessed this diet chart on your website and would like a personalized dosha-specific nutrition plan. Please guide me.`;
     const url = buildWhatsAppUrl(message);
     window.open(url, '_blank');
   };
 
+  const scrollToForm = () => {
+    if (formRef.current) {
+      formRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  };
+
   return (
     <div className="diet-charts-page">
-      <Hero
-        title="Therapeutic Diet Charts."
-        subtitle="Food as primary medicine for cellular regeneration."
-        description="Explore doctor-curated whole food regimens crafted to kindle digestive Agni, eliminate metabolic toxicity (Ama), and rebalance endocrine and autonomic functions."
-        backgroundImage="https://images.unsplash.com/photo-1490645935967-10de6ba17061?auto=format&fit=crop&w=2000&q=85"
-        showCtas={false}
-        height="48vh"
-      />
-
-      <section className="section" style={{ padding: '64px 0 96px 0' }}>
+      {/* SECTION 1: INTRODUCTORY SECTION & DOWNLOAD DIET CHARTS FORM */}
+      <section className="diet-lead-section" ref={formRef}>
         <div className="container">
           
+          {/* Top Intro Paragraph matching drmanojjohnson.com */}
+          <div className="diet-lead-intro">
+            Proper nutrition is the foundation of good health and healing. This page provides comprehensive diet charts designed to support various <strong>health conditions</strong>, lifestyle goals, and individual needs through evidence-based nutritional guidance and holistic dietary approaches.
+          </div>
+
+          {/* Split Layout: Image on Left + Form on Right */}
+          <div className="diet-lead-split">
+            {/* Left Column: Wholesome Nutrition Meal Image */}
+            <div className="diet-lead-image-col">
+              <img 
+                src="/images/diet_healthy_meal.jpg" 
+                alt="Wholesome healthy nutrition and balanced satvic diet meal"
+                onError={(e) => {
+                  e.currentTarget.onerror = null;
+                  e.currentTarget.src = '/images/ayurveda_shirodhara.jpg';
+                }}
+              />
+            </div>
+
+            {/* Right Column: Download Diet Charts Form */}
+            <div className="diet-lead-form-col">
+              {hasAccess && !showEditForm ? (
+                <div style={{ background: '#f0fdf4', border: '1px solid #bbf7d0', borderRadius: 'var(--radius-md)', padding: '36px 30px', textAlign: 'center' }}>
+                  <div style={{ width: '56px', height: '56px', borderRadius: '50%', background: '#dcfce7', color: '#166534', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 16px auto' }}>
+                    <CheckCircle2 size={32} />
+                  </div>
+                  <h3 style={{ color: '#166534', fontSize: '1.8rem', marginBottom: '8px' }}>
+                    Access Granted!
+                  </h3>
+                  <p style={{ color: '#14532d', fontSize: '1rem', lineHeight: '1.6', marginBottom: '20px' }}>
+                    Welcome, <strong>{formData.firstName} {formData.lastName}</strong> ({formData.email}). Your access to the complete Sparsha clinical diet charts library is fully unlocked.
+                  </p>
+
+                  <div style={{ display: 'flex', justifyContent: 'center', gap: '12px', flexWrap: 'wrap' }}>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        if (libraryRef.current) {
+                          libraryRef.current.scrollIntoView({ behavior: 'smooth' });
+                        }
+                      }}
+                      className="btn btn-primary"
+                      style={{ background: '#0047ab', borderColor: '#0047ab', display: 'inline-flex', alignItems: 'center', gap: '8px' }}
+                    >
+                      <ArrowDown size={16} />
+                      <span>View & Download Charts Below</span>
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => setShowEditForm(true)}
+                      className="btn btn-outline"
+                      style={{ fontSize: '0.88rem' }}
+                    >
+                      Update Details
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <form onSubmit={handleFormSubmit} noValidate>
+                  <h2 className="diet-lead-title">
+                    Download Diet Charts
+                  </h2>
+
+                  <p className="diet-lead-desc">
+                    Enter your name, email, and phone number to access our complete library of diet charts. Once submitted, you’ll be taken to a download page where you can view and download any chart you need.
+                  </p>
+
+                  {/* Row 1: First Name & Last Name */}
+                  <div className="diet-form-grid-2">
+                    <div className="diet-form-field">
+                      <label className="diet-form-label" htmlFor="firstName">
+                        First Name <span className="required-star">*</span>
+                      </label>
+                      <input
+                        type="text"
+                        id="firstName"
+                        name="firstName"
+                        className="diet-form-input"
+                        placeholder="Enter Your First Name"
+                        value={formData.firstName}
+                        onChange={handleInputChange}
+                        required
+                      />
+                      {errors.firstName && (
+                        <span style={{ color: '#dc2626', fontSize: '0.78rem' }}>{errors.firstName}</span>
+                      )}
+                    </div>
+
+                    <div className="diet-form-field">
+                      <label className="diet-form-label" htmlFor="lastName">
+                        Last Name <span className="required-star">*</span>
+                      </label>
+                      <input
+                        type="text"
+                        id="lastName"
+                        name="lastName"
+                        className="diet-form-input"
+                        placeholder="Enter Your Last Name"
+                        value={formData.lastName}
+                        onChange={handleInputChange}
+                        required
+                      />
+                      {errors.lastName && (
+                        <span style={{ color: '#dc2626', fontSize: '0.78rem' }}>{errors.lastName}</span>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Row 2: Email & Phone */}
+                  <div className="diet-form-grid-2">
+                    <div className="diet-form-field">
+                      <label className="diet-form-label" htmlFor="email">
+                        Email <span className="required-star">*</span>
+                      </label>
+                      <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        className="diet-form-input"
+                        placeholder="Email Address"
+                        value={formData.email}
+                        onChange={handleInputChange}
+                        required
+                      />
+                      {errors.email && (
+                        <span style={{ color: '#dc2626', fontSize: '0.78rem' }}>{errors.email}</span>
+                      )}
+                    </div>
+
+                    <div className="diet-form-field">
+                      <label className="diet-form-label" htmlFor="phone">
+                        Phone <span className="required-star">*</span>
+                      </label>
+                      <input
+                        type="tel"
+                        id="phone"
+                        name="phone"
+                        className="diet-form-input"
+                        placeholder="Phone Number"
+                        value={formData.phone}
+                        onChange={handleInputChange}
+                        required
+                      />
+                      {errors.phone && (
+                        <span style={{ color: '#dc2626', fontSize: '0.78rem' }}>{errors.phone}</span>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Row 3: Country & City */}
+                  <div className="diet-form-grid-2">
+                    <div className="diet-form-field">
+                      <label className="diet-form-label" htmlFor="country">
+                        Country <span className="required-star">*</span>
+                      </label>
+                      <select
+                        id="country"
+                        name="country"
+                        className="diet-form-input"
+                        value={formData.country}
+                        onChange={handleInputChange}
+                        required
+                      >
+                        <option value="">Select Country</option>
+                        {COUNTRIES.map((c) => (
+                          <option key={c} value={c}>{c}</option>
+                        ))}
+                      </select>
+                      {errors.country && (
+                        <span style={{ color: '#dc2626', fontSize: '0.78rem' }}>{errors.country}</span>
+                      )}
+                    </div>
+
+                    <div className="diet-form-field">
+                      <label className="diet-form-label" htmlFor="city">
+                        City <span className="required-star">*</span>
+                      </label>
+                      <input
+                        type="text"
+                        id="city"
+                        name="city"
+                        className="diet-form-input"
+                        placeholder="Your City Name"
+                        value={formData.city}
+                        onChange={handleInputChange}
+                        required
+                      />
+                      {errors.city && (
+                        <span style={{ color: '#dc2626', fontSize: '0.78rem' }}>{errors.city}</span>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Submit Button */}
+                  <button
+                    type="submit"
+                    disabled={isSubmitting}
+                    className="diet-submit-btn"
+                  >
+                    {isSubmitting ? 'Accessing Library...' : 'VIEW DIET CHARTS'}
+                  </button>
+
+                  {hasAccess && showEditForm && (
+                    <button
+                      type="button"
+                      onClick={() => setShowEditForm(false)}
+                      style={{ background: 'none', border: 'none', color: 'var(--color-text-muted)', fontSize: '0.85rem', cursor: 'pointer', marginTop: '12px', width: '100%', textAlign: 'center' }}
+                    >
+                      Cancel and return to Diet Charts library
+                    </button>
+                  )}
+                </form>
+              )}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* SECTION 2: COMPLETE DIET CHARTS DOWNLOAD & PROTOCOL LIBRARY */}
+      <section 
+        className="section section-alt" 
+        id="diet-library-section" 
+        ref={libraryRef}
+        style={{ padding: '64px 0 96px 0' }}
+      >
+        <div className="container">
+
+          {/* Section Header */}
+          <SectionTitle
+            eyebrow="Clinical Diet Library"
+            title="Evidence-Based Nutritional Protocols"
+            subtitle="Explore whole-food schedules tailored to kindle digestive Agni, eliminate metabolic toxicity (Ama), and rebalance endocrine health."
+          />
+
+          {/* Unlocked Banner if user filled the form */}
+          {hasAccess ? (
+            <div className="diet-unlocked-banner">
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                <CheckCircle2 size={24} color="#166534" />
+                <div>
+                  <strong style={{ color: '#166534', fontSize: '1.02rem', display: 'block' }}>
+                    Library Access Unlocked for {formData.firstName} {formData.lastName}
+                  </strong>
+                  <span style={{ fontSize: '0.86rem', color: '#15803d' }}>
+                    You can view hour-by-hour schedules, Pathya/Apathya foods, and click "Print / Save PDF" on any chart to save to your device.
+                  </span>
+                </div>
+              </div>
+
+              <div style={{ display: 'flex', gap: '10px' }}>
+                <button
+                  type="button"
+                  onClick={handlePrint}
+                  className="btn btn-outline btn-sm"
+                  style={{ background: '#ffffff' }}
+                >
+                  <Printer size={15} /> Print Active Chart
+                </button>
+              </div>
+            </div>
+          ) : (
+            <div style={{ background: '#fffbeb', border: '1px solid #fde68a', borderRadius: 'var(--radius-md)', padding: '16px 20px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '12px', marginBottom: '32px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px', color: '#92400e', fontSize: '0.92rem' }}>
+                <Lock size={18} />
+                <span>Showing chart previews. Fill out the form above to access and download the complete PDF guides.</span>
+              </div>
+              <button
+                type="button"
+                onClick={scrollToForm}
+                className="btn btn-sm btn-primary"
+                style={{ background: '#0047ab', borderColor: '#0047ab' }}
+              >
+                Fill Form to Unlock
+              </button>
+            </div>
+          )}
+
           {/* Diet Charts Selector Tabs */}
-          <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', justifyContent: 'center', marginBottom: '40px' }}>
+          <div className="diet-charts-tabs-wrapper" style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', justifyContent: 'center', marginBottom: '40px' }}>
             {DIET_CHARTS.map((chart) => (
               <button
                 key={chart.id}
@@ -88,7 +479,7 @@ export default function DietCharts() {
               boxShadow: 'var(--shadow-md)'
             }}
           >
-            {/* Header with Title & Print Action */}
+            {/* Header with Title & Action Buttons */}
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '20px', borderBottom: '1px solid var(--color-border)', paddingBottom: '24px', marginBottom: '32px' }}>
               <div>
                 <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', background: 'var(--color-sage-mist)', color: 'var(--color-primary)', padding: '4px 12px', borderRadius: '16px', fontSize: '0.8rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '10px' }}>
@@ -113,8 +504,8 @@ export default function DietCharts() {
                   className="btn btn-outline"
                   style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', fontSize: '0.88rem' }}
                 >
-                  <Printer size={16} />
-                  <span>Print / Save PDF</span>
+                  <Download size={16} />
+                  <span>Download / Print PDF</span>
                 </button>
 
                 <button
@@ -243,7 +634,7 @@ export default function DietCharts() {
               </div>
             )}
 
-            {/* Consultation Banner */}
+            {/* Consultation Callout Banner */}
             <div style={{ background: 'linear-gradient(135deg, #1f0a38 0%, #3b1464 100%)', borderRadius: 'var(--radius-md)', padding: '36px', color: '#ffffff', textAlign: 'center', border: '1px solid rgba(223, 190, 116, 0.25)', boxShadow: '0 8px 32px rgba(15, 5, 30, 0.25)' }}>
               <h3 style={{ color: '#ffffff', fontSize: '1.6rem', marginBottom: '10px' }}>
                 Need a Personalized Diet Chart for Your Body Type?
