@@ -9,7 +9,6 @@ import Modal from '../components/Modal';
 import { services, healthConditions } from '../data/services';
 import { products } from '../data/products';
 import { ArrowRight, CheckCircle2, Award, Users, HeartHandshake, Sparkles, MapPin, Star, BookOpen, Utensils } from 'lucide-react';
-import EventsSection from '../components/EventsSection';
 import { TESTIMONIALS } from '../data/testimonialsData';
 
 export default function Home() {
@@ -352,9 +351,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* UPCOMING EVENTS & RETREATS SECTION */}
-      <EventsSection />
-
+      
       {/* SECTION 7: HEALTHCARE / CONDITIONS */}
       <section className="section">
         <div className="container">

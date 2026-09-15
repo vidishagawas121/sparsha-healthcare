@@ -48,7 +48,7 @@ export const DEFAULT_EVENTS = [
     time: 'Pan-India Delivery',
     location: 'Sparsha Apothecary & Online Dispatch',
     price: '₹549 (250g Glass Jar)',
-    image: '/images/digestive_tea.jpg',
+    image: '/images/digestive_balance.jpg',
     description: 'Our newest clinical herbal formulation: Triphala Gold Rasayana. Cold-compounded with wild-harvested Triphala, organic dry ginger, and natural rock-bee honey from the Western Ghats. Clears accumulated Ama, restores digestive Agni, and supports gentle daily regularity.',
     actionText: 'Order via WhatsApp',
     isPinned: false,

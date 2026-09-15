@@ -153,7 +153,7 @@ export default function EventsSection() {
                         ? '/images/wiki_moringa_1.jpg' 
                         : '/images/digestive_balance.jpg')
                     }
-                    alt={evt.title}
+                    alt={evt.title} onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = '/images/digestive_balance.jpg'; }}
                     style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                   />
                   <div
