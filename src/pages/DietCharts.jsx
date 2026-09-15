@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
 import Hero from '../components/Hero';
 import SectionTitle from '../components/SectionTitle';
 import Button from '../components/Button';
@@ -43,6 +44,7 @@ const COUNTRIES = [
 ];
 
 export default function DietCharts() {
+  const navigate = useNavigate();
   const [activeChartId, setActiveChartId] = useState(DIET_CHARTS[0].id);
   const [hasAccess, setHasAccess] = useState(false);
   const [formData, setFormData] = useState({
@@ -131,10 +133,9 @@ export default function DietCharts() {
       setIsSubmitting(false);
       setHasAccess(true);
       setShowEditForm(false);
-      if (libraryRef.current) {
-        libraryRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
-    }, 400);
+      // Navigate directly to the requested download files page
+      navigate('/diet-charts/download-files');
+    }, 300);
   };
 
   const handlePrint = () => {
@@ -196,16 +197,27 @@ export default function DietCharts() {
                   <div style={{ display: 'flex', justifyContent: 'center', gap: '12px', flexWrap: 'wrap' }}>
                     <button
                       type="button"
+                      onClick={() => navigate('/diet-charts/download-files')}
+                      className="btn btn-primary"
+                      style={{ background: '#0047ab', borderColor: '#0047ab', display: 'inline-flex', alignItems: 'center', gap: '8px' }}
+                    >
+                      <Sparkles size={16} />
+                      <span>Go to Download Files Page</span>
+                      <ExternalLink size={14} />
+                    </button>
+
+                    <button
+                      type="button"
                       onClick={() => {
                         if (libraryRef.current) {
                           libraryRef.current.scrollIntoView({ behavior: 'smooth' });
                         }
                       }}
-                      className="btn btn-primary"
-                      style={{ background: '#0047ab', borderColor: '#0047ab', display: 'inline-flex', alignItems: 'center', gap: '8px' }}
+                      className="btn btn-outline"
+                      style={{ fontSize: '0.88rem' }}
                     >
-                      <ArrowDown size={16} />
-                      <span>View & Download Charts Below</span>
+                      <ArrowDown size={14} />
+                      <span>View Charts Below</span>
                     </button>
 
                     <button
