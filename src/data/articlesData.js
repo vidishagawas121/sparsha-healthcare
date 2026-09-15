@@ -155,7 +155,7 @@ export const articles = [
     readTime: '5 min read',
     date: 'April 2026',
     author: 'Dr. Johnson & Wellness Concierge',
-    image: 'https://images.unsplash.com/photo-1511295742362-92c96b124e52?auto=format&fit=crop&w=1200&q=80',
+    image: '/images/sleep_sanctuary.jpg',
     summary: 'Restorative sleep is non-negotiable for neuro-cellular repair. Practical bedside rituals, warm foot oiling (Pada Abhyanga), and herbal sleep elixirs to end insomnia.',
     content: [
       {

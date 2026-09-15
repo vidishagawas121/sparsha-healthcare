@@ -278,26 +278,11 @@ export default function Appointment() {
           <div className="appointment-form-box">
             
             {/* Inquiry Type Tabs */}
-            <div className="inquiry-type-tabs" style={{ display: 'flex', gap: '10px', marginBottom: '32px', background: 'var(--color-bg-alt)', padding: '6px', borderRadius: '30px' }}>
+            <div className="inquiry-type-tabs">
               <button
                 type="button"
                 onClick={() => setInquiryType('service')}
-                style={{
-                  flex: 1,
-                  padding: '12px 18px',
-                  borderRadius: '24px',
-                  border: 'none',
-                  background: inquiryType === 'service' ? 'var(--color-primary)' : 'transparent',
-                  color: inquiryType === 'service' ? '#ffffff' : 'var(--color-text-muted)',
-                  fontWeight: 600,
-                  fontSize: '0.95rem',
-                  cursor: 'pointer',
-                  transition: 'all 0.2s ease',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  gap: '8px'
-                }}
+                className={`inquiry-tab-btn ${inquiryType === 'service' ? 'active' : ''}`}
               >
                 <span>🩺</span>
                 <span>Doctor Consultation & Services</span>
@@ -306,22 +291,7 @@ export default function Appointment() {
               <button
                 type="button"
                 onClick={() => setInquiryType('product')}
-                style={{
-                  flex: 1,
-                  padding: '12px 18px',
-                  borderRadius: '24px',
-                  border: 'none',
-                  background: inquiryType === 'product' ? 'var(--color-primary)' : 'transparent',
-                  color: inquiryType === 'product' ? '#ffffff' : 'var(--color-text-muted)',
-                  fontWeight: 600,
-                  fontSize: '0.95rem',
-                  cursor: 'pointer',
-                  transition: 'all 0.2s ease',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  gap: '8px'
-                }}
+                className={`inquiry-tab-btn ${inquiryType === 'product' ? 'active' : ''}`}
               >
                 <span>🌿</span>
                 <span>Herbal Products & Remedies</span>

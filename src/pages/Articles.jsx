@@ -184,6 +184,10 @@ export default function Articles() {
                     src={art.image}
                     alt={art.title}
                     style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                    onError={(e) => {
+                      e.currentTarget.onerror = null;
+                      e.currentTarget.src = '/images/ayurveda_shirodhara.jpg';
+                    }}
                   />
                   <div style={{ position: 'absolute', top: '12px', left: '12px', background: 'rgba(59, 20, 100, 0.92)', color: '#ffffff', padding: '3px 10px', borderRadius: '16px', fontSize: '0.75rem', fontWeight: 600, border: '1px solid rgba(223, 190, 116, 0.3)' }}>
                     {art.category}
@@ -266,6 +270,10 @@ export default function Articles() {
                 src={activeArticle.image}
                 alt={activeArticle.title}
                 style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                onError={(e) => {
+                  e.currentTarget.onerror = null;
+                  e.currentTarget.src = '/images/ayurveda_shirodhara.jpg';
+                }}
               />
             </div>
 

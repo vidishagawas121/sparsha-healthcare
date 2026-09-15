@@ -1806,6 +1806,42 @@ button, input, select, textarea {
   box-shadow: var(--shadow-md);
 }
 
+.inquiry-type-tabs {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 32px;
+  background: var(--color-bg-alt);
+  padding: 6px;
+  border-radius: 30px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.inquiry-tab-btn {
+  flex: 1;
+  padding: 12px 18px;
+  border-radius: 24px;
+  border: none;
+  background: transparent;
+  color: var(--color-text-muted);
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.inquiry-tab-btn.active {
+  background: var(--color-primary);
+  color: #ffffff;
+  box-shadow: 0 2px 8px rgba(59, 20, 100, 0.25);
+}
+
 .floating-whatsapp-container a {
   animation: pulseWhatsApp 2.2s infinite;
 }
@@ -2295,16 +2331,27 @@ button, input, select, textarea {
     padding: 20px 16px !important;
   }
   .inquiry-type-tabs {
+    display: flex !important;
     flex-direction: column !important;
     gap: 8px !important;
     border-radius: var(--radius-md) !important;
-    padding: 6px !important;
+    padding: 8px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    margin-bottom: 24px !important;
   }
+  .inquiry-type-tabs .inquiry-tab-btn,
   .inquiry-type-tabs button {
     width: 100% !important;
     border-radius: var(--radius-sm) !important;
-    padding: 11px 14px !important;
-    font-size: 0.88rem !important;
+    padding: 12px 14px !important;
+    font-size: 0.9rem !important;
+    box-sizing: border-box !important;
+    flex: none !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-align: center !important;
   }
   .modal-dialog {
     padding: 20px 16px !important;
