@@ -316,6 +316,10 @@ export default function NoticeBoard() {
                   src={selectedNotice.image}
                   alt={selectedNotice.title}
                   loading="lazy"
+                  onError={(e) => {
+                    e.currentTarget.onerror = null;
+                    e.currentTarget.src = '/images/digestive_balance.jpg';
+                  }}
                 />
               </div>
             )}

@@ -53,9 +53,15 @@ export default function ProductDetails() {
 
         {/* Product Main Grid */}
         <div className="product-detail-grid">
-          {/* Left Gallery Image */}
           <div className="product-gallery-main">
-            <img src={product.image} alt={product.name} />
+            <img 
+              src={product.image} 
+              alt={product.name}
+              onError={(e) => {
+                e.currentTarget.onerror = null;
+                e.currentTarget.src = '/images/digestive_balance.jpg';
+              }}
+            />
           </div>
 
           {/* Right Product Overview & Actions */}

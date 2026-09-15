@@ -130,6 +130,20 @@ export const DEFAULT_EVENTS = [
 
 const STORAGE_KEY = 'sparsha_upcoming_events';
 
+function sanitizeEvents(list) {
+  if (!Array.isArray(list)) return list;
+  return list.map(item => {
+    let img = item.image;
+    if (img === '/images/digestive_tea.jpg' || (!img && item.id === 'evt-product-launch-rasayana')) {
+      img = '/images/digestive_balance.jpg';
+    }
+    return {
+      ...item,
+      image: img
+    };
+  });
+}
+
 /**
  * Get all events (from server or localStorage fallback)
  */
@@ -139,8 +153,9 @@ export async function getEvents() {
     if (res.ok) {
       const data = await res.json();
       if (Array.isArray(data) && data.length > 0) {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-        return data;
+        const sanitized = sanitizeEvents(data);
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(sanitized));
+        return sanitized;
       }
     }
   } catch (err) {
@@ -150,7 +165,14 @@ export async function getEvents() {
   const stored = localStorage.getItem(STORAGE_KEY);
   if (stored) {
     try {
-      return JSON.parse(stored);
+      const parsed = JSON.parse(stored);
+      if (Array.isArray(parsed) && parsed.length > 0) {
+        const sanitized = sanitizeEvents(parsed);
+        if (JSON.stringify(sanitized) !== stored) {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(sanitized));
+        }
+        return sanitized;
+      }
     } catch (e) {
       // fallback
     }

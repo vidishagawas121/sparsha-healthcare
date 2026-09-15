@@ -896,6 +896,10 @@ export default function Admin() {
                               <img
                                 src={eventForm.image}
                                 alt="Banner preview"
+                                onError={(e) => {
+                                  e.currentTarget.onerror = null;
+                                  e.currentTarget.src = '/images/digestive_balance.jpg';
+                                }}
                                 style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                               />
                             </div>
@@ -995,7 +999,7 @@ export default function Admin() {
                         id="eventImage"
                         name="image"
                         className="form-control"
-                        placeholder="e.g. /images/digestive_tea.jpg or https://images.unsplash.com/..."
+                        placeholder="e.g. /images/digestive_balance.jpg or https://images.unsplash.com/..."
                         value={eventForm.image || ''}
                         onChange={handleInputChange}
                       />
@@ -1098,6 +1102,10 @@ export default function Admin() {
                       <img
                         src={evt.image}
                         alt={evt.title}
+                        onError={(e) => {
+                          e.currentTarget.onerror = null;
+                          e.currentTarget.src = '/images/digestive_balance.jpg';
+                        }}
                         style={{ width: '80px', height: '80px', borderRadius: 'var(--radius-sm)', objectFit: 'cover', flexShrink: 0 }}
                       />
                     )}

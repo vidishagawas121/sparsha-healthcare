@@ -17,6 +17,10 @@ export default function ProductCard({ product }) {
           src={product.image}
           alt={product.name}
           loading="lazy"
+          onError={(e) => {
+            e.currentTarget.onerror = null;
+            e.currentTarget.src = '/images/digestive_balance.jpg';
+          }}
         />
       </Link>
 

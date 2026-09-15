@@ -51,7 +51,14 @@ export default function Cart() {
             {cartItems.map((item) => (
               <div key={item.id} className="cart-item-row">
                 <div className="cart-item-thumb">
-                  <img src={item.image} alt={item.name} />
+                  <img 
+                    src={item.image} 
+                    alt={item.name} 
+                    onError={(e) => {
+                      e.currentTarget.onerror = null;
+                      e.currentTarget.src = '/images/digestive_balance.jpg';
+                    }}
+                  />
                 </div>
 
                 <div>
