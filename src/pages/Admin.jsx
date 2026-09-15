@@ -1083,108 +1083,73 @@ export default function Admin() {
                 </button>
               </div>
 
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+              <div className="admin-notices-list">
                 {events.map((evt) => (
                   <div
                     key={evt.id}
-                    style={{
-                      background: '#ffffff',
-                      borderRadius: 'var(--radius-md)',
-                      padding: '16px 18px',
-                      border: evt.isPinned ? '2px solid var(--color-gold)' : '1px solid var(--color-border)',
-                      boxShadow: 'var(--shadow-sm)',
-                      display: 'flex',
-                      gap: '14px',
-                      position: 'relative'
-                    }}
+                    className={`admin-notice-item ${evt.isPinned ? 'is-pinned' : ''}`}
                   >
                     {evt.image && (
-                      <img
-                        src={evt.image}
-                        alt={evt.title}
-                        onError={(e) => {
-                          e.currentTarget.onerror = null;
-                          e.currentTarget.src = '/images/digestive_balance.jpg';
-                        }}
-                        style={{ width: '80px', height: '80px', borderRadius: 'var(--radius-sm)', objectFit: 'cover', flexShrink: 0 }}
-                      />
+                      <div className="admin-notice-thumb">
+                        <img
+                          src={evt.image}
+                          alt={evt.title}
+                          onError={(e) => {
+                            e.currentTarget.onerror = null;
+                            e.currentTarget.src = '/images/digestive_balance.jpg';
+                          }}
+                        />
+                      </div>
                     )}
 
-                    <div style={{ flex: 1 }}>
-                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4px' }}>
-                        <span style={{ 
-                          background: evt.type === 'product' ? 'rgba(217, 119, 6, 0.12)' : evt.type === 'opd' ? 'rgba(30, 64, 175, 0.1)' : 'var(--color-sage-mist)', 
-                          color: evt.type === 'product' ? '#b45309' : evt.type === 'opd' ? '#1d4ed8' : 'var(--color-primary)', 
-                          padding: '2px 8px', 
-                          borderRadius: '4px', 
-                          fontSize: '0.7rem', 
-                          fontWeight: 700 
-                        }}>
+                    <div className="admin-notice-content">
+                      <div className="admin-notice-header">
+                        <span className={`admin-notice-badge badge-${evt.type || 'product'}`}>
                           {evt.badge || evt.category}
                         </span>
 
                         {evt.isPinned && (
-                          <span style={{ display: 'inline-flex', alignItems: 'center', gap: '2px', fontSize: '0.7rem', color: 'var(--color-leaf)', fontWeight: 700 }}>
+                          <span className="admin-notice-pinned-tag">
                             <Pin size={11} /> Pinned
                           </span>
                         )}
                       </div>
 
-                      <h4 style={{ fontSize: '0.98rem', margin: '2px 0 4px 0', color: 'var(--color-primary)', lineHeight: 1.3 }}>
+                      <h4 className="admin-notice-title">
                         {evt.title}
                       </h4>
 
                       {evt.summary && (
-                        <p style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)', margin: '0 0 6px 0', lineHeight: 1.35 }}>
+                        <p className="admin-notice-summary">
                           {evt.summary}
                         </p>
                       )}
 
-                      <div style={{ fontSize: '0.78rem', color: 'var(--color-gold)', fontWeight: 600, marginBottom: '2px' }}>
+                      <div className="admin-notice-schedule">
                         📅 {evt.dateDisplay || evt.date} {evt.time ? `• ⏰ ${evt.time}` : ''}
                       </div>
 
-                      <div style={{ fontSize: '0.76rem', color: 'var(--color-text-muted)', display: 'flex', gap: '10px' }}>
+                      <div className="admin-notice-meta">
                         {evt.location && <span>📍 {evt.location.split(',')[0]}</span>}
-                        {evt.price && <span style={{ color: '#b45309', fontWeight: 600 }}>💰 {evt.price}</span>}
+                        {evt.price && <span className="meta-price">💰 {evt.price}</span>}
                       </div>
 
                       {/* Action buttons */}
-                      <div style={{ display: 'flex', gap: '8px', marginTop: '10px', flexWrap: 'wrap' }}>
+                      <div className="admin-notice-actions">
                         <button
                           type="button"
+                          className="admin-action-btn btn-pin"
                           onClick={() => handleTogglePin(evt.id)}
-                          style={{
-                            background: evt.isPinned ? '#fef3c7' : 'var(--color-bg-alt)',
-                            color: evt.isPinned ? '#92400e' : 'var(--color-text-main)',
-                            border: '1px solid var(--color-border)',
-                            borderRadius: '4px',
-                            padding: '3px 8px',
-                            fontSize: '0.75rem',
-                            cursor: 'pointer',
-                            display: 'inline-flex',
-                            alignItems: 'center',
-                            gap: '4px'
-                          }}
                         >
                           <Pin size={12} />
-                          <span>{evt.isPinned ? 'Unpin' : 'Pin to Top'}</span>
+                          <span className="btn-text-full">{evt.isPinned ? 'Unpin' : 'Pin to Top'}</span>
+                          <span className="btn-text-short">{evt.isPinned ? 'Unpin' : 'Pin'}</span>
                         </button>
 
                         <button
                           type="button"
+                          className="admin-action-btn btn-edit"
                           onClick={() => handleStartEdit(evt)}
-                          style={{
-                            background: 'var(--color-bg-alt)',
-                            border: '1px solid var(--color-border)',
-                            borderRadius: '4px',
-                            padding: '3px 8px',
-                            fontSize: '0.75rem',
-                            cursor: 'pointer',
-                            display: 'inline-flex',
-                            alignItems: 'center',
-                            gap: '4px'
-                          }}
                         >
                           <Edit3 size={12} />
                           <span>Edit</span>
@@ -1192,19 +1157,8 @@ export default function Admin() {
 
                         <button
                           type="button"
+                          className="admin-action-btn btn-delete"
                           onClick={() => handleDeleteEvent(evt.id)}
-                          style={{
-                            background: '#fee2e2',
-                            color: '#991b1b',
-                            border: '1px solid #fecaca',
-                            borderRadius: '4px',
-                            padding: '3px 8px',
-                            fontSize: '0.75rem',
-                            cursor: 'pointer',
-                            display: 'inline-flex',
-                            alignItems: 'center',
-                            gap: '4px'
-                          }}
                         >
                           <Trash2 size={12} />
                           <span>Delete</span>
