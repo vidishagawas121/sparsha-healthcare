@@ -17,9 +17,19 @@ export default function Footer() {
           {/* Brand Column */}
           <div>
             <div className="brand-logo" style={{ marginBottom: '16px' }}>
-              <div className="brand-leaf-icon" style={{ background: 'rgba(255,255,255,0.1)' }}>
-                <Leaf size={20} color="#dfbe74" />
-              </div>
+              <img
+                src="/images/sparsha_logo.png"
+                alt="Sparsha Healthcare Group Logo"
+                style={{
+                  height: '48px',
+                  width: '48px',
+                  objectFit: 'contain',
+                  borderRadius: '8px',
+                  background: '#ffffff',
+                  padding: '3px',
+                  boxShadow: '0 2px 8px rgba(0,0,0,0.3)'
+                }}
+              />
               <span className="footer-brand-title">SPARSHA</span>
             </div>
             <p className="footer-brand-tagline">
@@ -30,50 +40,48 @@ export default function Footer() {
             </p>
             <div className="footer-social-row">
               <a
-                href="#instagram"
+                href="https://www.instagram.com/sparsha_hospital/"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="footer-social-btn"
-                aria-label="Instagram"
-                onClick={(e) => { e.preventDefault(); alert('Demo Link: Sparsha Healthcare Instagram profile.'); }}
+                aria-label="Instagram (@sparsha_hospital)"
+                title="Follow Sparsha on Instagram"
               >
                 <Instagram size={18} />
               </a>
               <a
-                href="#facebook"
+                href="https://www.facebook.com/Sparshaintegrated/"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="footer-social-btn"
-                aria-label="Facebook"
-                onClick={(e) => { e.preventDefault(); alert('Demo Link: Sparsha Healthcare Facebook page.'); }}
+                aria-label="Facebook (@Sparshaintegrated)"
+                title="Follow Sparsha on Facebook"
               >
                 <Facebook size={18} />
               </a>
               <a
-                href="#youtube"
+                href="https://www.youtube.com/@DrSarjasHealthtips"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="footer-social-btn"
-                aria-label="YouTube"
-                onClick={(e) => { e.preventDefault(); alert('Demo Link: Sparsha Healthcare YouTube channel.'); }}
+                aria-label="YouTube (@DrSarjasHealthtips)"
+                title="Watch Dr. Sarja's Health Tips on YouTube"
               >
                 <Youtube size={18} />
-              </a>
-              <a
-                href="#linkedin"
-                className="footer-social-btn"
-                aria-label="LinkedIn"
-                onClick={(e) => { e.preventDefault(); alert('Demo Link: Sparsha Healthcare LinkedIn profile.'); }}
-              >
-                <Linkedin size={18} />
               </a>
             </div>
           </div>
 
           {/* Quick Links */}
           <div>
-            <h4 className="footer-column-title">Explore</h4>
+            <h4 className="footer-column-title">Explore & Learn</h4>
             <ul className="footer-links-list">
-              <li><Link to="/" className="footer-link">Home</Link></li>
-              <li><Link to="/about" className="footer-link">About Us</Link></li>
-              <li><Link to="/care" className="footer-link">Care & Services</Link></li>
+              <li><Link to="/articles" className="footer-link">Clinical Articles</Link></li>
+              <li><Link to="/diet-charts" className="footer-link">Therapeutic Diet Charts</Link></li>
+              <li><Link to="/testimonials" className="footer-link">Patient Reviews (4.9 ★)</Link></li>
+              <li><Link to="/care" className="footer-link">Care & Modalities</Link></li>
               <li><Link to="/retreat" className="footer-link">Wellness Resort</Link></li>
               <li><Link to="/shop" className="footer-link">Herbal Shop</Link></li>
-              <li><Link to="/contact" className="footer-link">Contact & Locations</Link></li>
             </ul>
           </div>
 
@@ -127,6 +135,11 @@ export default function Footer() {
                   Consultation Enquiry
                 </Link>
               </li>
+              <li>
+                <Link to="/admin" className="footer-link" style={{ color: '#dfbe74' }}>
+                  Staff & Admin Portal →
+                </Link>
+              </li>
             </ul>
 
             <div style={{ marginTop: '28px' }}>
@@ -156,20 +169,20 @@ export default function Footer() {
       <Modal
         isOpen={activeModal === 'faq'}
         onClose={() => setActiveModal(null)}
-        title="Frequently Asked Questions (Demo)"
+        title="Frequently Asked Questions"
       >
         <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
           <div>
             <h4 style={{ color: 'var(--color-primary)', marginBottom: '4px' }}>How do I schedule an in-person consultation?</h4>
-            <p>You can submit an appointment request through our Appointment page or visit any of our regional centers in Chikmagalur and Bangalore.</p>
+            <p>You can submit an enquiry request through our Appointment page or visit any of our regional centers in Chikmagalur and Bangalore.</p>
           </div>
           <div>
             <h4 style={{ color: 'var(--color-primary)', marginBottom: '4px' }}>What should I pack for the Chikkolale Retreat?</h4>
             <p>Comfortable loose cotton clothing, walking shoes for forest trails, and any current health records you wish our physicians to review.</p>
           </div>
           <div>
-            <h4 style={{ color: 'var(--color-primary)', marginBottom: '4px' }}>How does the demo QR payment work?</h4>
-            <p>During checkout, a demo UPI QR code is displayed to showcase the modern digital payment experience for Shustha Herbal Remedies.</p>
+            <h4 style={{ color: 'var(--color-primary)', marginBottom: '4px' }}>How does WhatsApp ordering & consultation work?</h4>
+            <p>When you submit a product order or service enquiry form, your details are automatically formatted and dispatched directly to Sparsha Healthcare's official WhatsApp concierge for instant confirmation and personalized support.</p>
           </div>
         </div>
       </Modal>

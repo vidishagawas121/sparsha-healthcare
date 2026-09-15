@@ -21,7 +21,7 @@ export default function Care() {
         backgroundImage="https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&w=2000&q=80"
         showCtas={true}
         height="55vh"
-        primaryCtaText="Book a Consultation"
+        primaryCtaText="Enquire on WhatsApp"
         primaryCtaLink="/appointment"
         secondaryCtaText="Explore Modalities"
         secondaryCtaLink="#disciplines"
@@ -90,7 +90,7 @@ export default function Care() {
 
           <div style={{ textAlign: 'center', marginTop: '48px' }}>
             <Button to="/appointment" variant="primary" size="lg">
-              Book a Consultation Assessment
+              Enquire for Consultation on WhatsApp
             </Button>
           </div>
         </div>
@@ -131,7 +131,7 @@ export default function Care() {
               block
               onClick={() => setSelectedService(null)}
             >
-              Book {selectedService.title} Consultation
+              Enquire About {selectedService.title} via WhatsApp
             </Button>
           </div>
         )}

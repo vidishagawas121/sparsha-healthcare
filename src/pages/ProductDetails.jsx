@@ -3,7 +3,8 @@ import { useParams, Link, useNavigate } from 'react-router-dom';
 import { products } from '../data/products';
 import { useCart } from '../context/CartContext';
 import Button from '../components/Button';
-import { Star, ShoppingBag, ArrowLeft, Check, ShieldCheck, Truck, RefreshCw, Zap } from 'lucide-react';
+import { Star, ShoppingBag, ArrowLeft, Check, ShieldCheck, Truck, RefreshCw, Zap, MessageCircle } from 'lucide-react';
+import { generateWhatsAppProductUrl } from '../data/contactInfo';
 
 export default function ProductDetails() {
   const { id } = useParams();
@@ -31,6 +32,11 @@ export default function ProductDetails() {
   const handleBuyNow = () => {
     addToCart(product, quantity);
     navigate('/checkout');
+  };
+
+  const handleWhatsAppOrder = () => {
+    const waUrl = generateWhatsAppProductUrl(product, quantity);
+    window.open(waUrl, '_blank');
   };
 
   return (
@@ -133,6 +139,25 @@ export default function ProductDetails() {
               >
                 Buy Now
               </Button>
+
+              <button
+                type="button"
+                className="btn"
+                onClick={handleWhatsAppOrder}
+                style={{
+                  background: '#25D366',
+                  color: '#ffffff',
+                  border: '1px solid #25D366',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  fontWeight: 600,
+                  boxShadow: '0 2px 8px rgba(37, 211, 102, 0.3)'
+                }}
+              >
+                <MessageCircle size={18} />
+                <span>Order via WhatsApp</span>
+              </button>
             </div>
 
             {/* Guarantee / Shipping Badge */}

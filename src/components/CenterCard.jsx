@@ -27,9 +27,17 @@ export default function CenterCard({ center }) {
       </div>
 
       <div className="card-body">
-        <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: 'var(--color-sage)', fontSize: '0.85rem', fontWeight: 600, marginBottom: '8px' }}>
-          <MapPin size={16} />
-          <span>{center.location}</span>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px', flexWrap: 'wrap', gap: '6px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: 'var(--color-sage)', fontSize: '0.85rem', fontWeight: 600 }}>
+            <MapPin size={16} />
+            <span>{center.location}</span>
+          </div>
+          {center.rating && (
+            <div style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', background: '#fef3c7', color: '#92400e', padding: '2px 8px', borderRadius: '12px', fontSize: '0.74rem', fontWeight: 700 }}>
+              <span>★ {center.rating}</span>
+              <span>({center.reviewCount} Google reviews)</span>
+            </div>
+          )}
         </div>
 
         <h3 className="card-title">{center.name}</h3>
@@ -51,7 +59,11 @@ export default function CenterCard({ center }) {
           </ul>
         </div>
 
-        <div style={{ background: 'var(--color-bg-alt)', padding: '14px', borderRadius: 'var(--radius-sm)', marginBottom: '20px', fontSize: '0.85rem', display: 'flex', flexDirection: 'column', gap: '6px' }}>
+        <div style={{ background: 'var(--color-bg-alt)', padding: '14px', borderRadius: 'var(--radius-sm)', marginBottom: '20px', fontSize: '0.85rem', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+          <div style={{ display: 'flex', alignItems: 'flex-start', gap: '8px' }}>
+            <MapPin size={14} color="var(--color-primary)" style={{ marginTop: '2px', flexShrink: 0 }} />
+            <span>{center.address}</span>
+          </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             <Clock size={14} color="var(--color-primary)" />
             <span>{center.timings}</span>

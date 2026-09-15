@@ -147,8 +147,8 @@ export default function Cart() {
             </div>
 
             <div style={{ marginTop: '24px', display: 'flex', alignItems: 'center', gap: '10px', fontSize: '0.82rem', color: 'var(--color-text-muted)' }}>
-              <ShieldCheck size={18} color="var(--color-primary)" />
-              <span>Instant QR UPI payment demonstration at checkout</span>
+              <ShieldCheck size={18} color="#25D366" />
+              <span>Instant order confirmation & dispatch coordination via WhatsApp</span>
             </div>
           </div>
         </div>

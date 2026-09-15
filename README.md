@@ -37,8 +37,11 @@ Open your browser at:
 ### ⛰️ Journey 2: Western Ghats Retreat
 `Home` ➔ `Retreat` (Escape to Chikkolale) ➔ Explore programs (Restore, Renew, Reconnect) ➔ Click `Enquire About a Retreat` ➔ Form opens pre-filled with retreat selection ➔ Submit inquiry ➔ Recorded confirmation.
 
-### 🛍️ Journey 3: Herbal Remedies & QR Payment
-`Home` ➔ `Shop` ➔ Filter by category (Wellness, Digestive, Herbal, Lifestyle) ➔ View `Product Details` with botanical ingredients & usage ➔ `Add to Cart` / `Buy Now` ➔ `Cart` ➔ `Checkout` ➔ **UPI QR Payment Demonstration** (Scan QR via UPI apps) ➔ Click `I Have Completed Payment` ➔ Order placed confirmation with Order ID `SP-2026-XXXX`.
+### 🛍️ Journey 3: Herbal Remedies & WhatsApp Direct Order
+`Home` ➔ `Shop` ➔ Filter by category (Wellness, Digestive, Herbal, Lifestyle) ➔ View `Product Details` with botanical ingredients & usage ➔ `Add to Cart` / `Buy Now` / `Order via WhatsApp` ➔ `Cart` ➔ `Checkout` ➔ Submit delivery details ➔ **Automated WhatsApp Order Dispatch** (Opens pre-formatted message sent directly to Sparsha Healthcare) ➔ Order placed confirmation with Order ID `SP-2026-XXXX`.
+
+### 📅 Journey 4: Admin Portal & Upcoming Events Management
+`Footer` ➔ `Staff & Admin Portal` (or navigate to `/admin`) ➔ Log in with demo credentials (`admin@sparshahealth.com` / `sparsha2026`) ➔ Add, edit, or delete upcoming wellness events and retreats ➔ Live sync with the **Upcoming Events** section on the Home page.
 
 ---
 

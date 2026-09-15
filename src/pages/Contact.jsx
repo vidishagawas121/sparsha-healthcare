@@ -3,7 +3,8 @@ import Hero from '../components/Hero';
 import SectionTitle from '../components/SectionTitle';
 import Button from '../components/Button';
 import { centers } from '../data/centers';
-import { MapPin, Phone, Mail, Clock, Send, CheckCircle2, MessageSquare } from 'lucide-react';
+import { CONTACT_INFO, buildWhatsAppUrl } from '../data/contactInfo';
+import { MapPin, Phone, Mail, Clock, Send, CheckCircle2, MessageSquare, Instagram, Facebook, Youtube, ExternalLink, MessageCircle, Navigation, Star } from 'lucide-react';
 
 export default function Contact() {
   const [formData, setFormData] = useState({
@@ -15,9 +16,16 @@ export default function Contact() {
   });
 
   const [submitted, setSubmitted] = useState(false);
+  const [whatsappUrl, setWhatsappUrl] = useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    const msg = `SPARSHA HEALTHCARE - GENERAL ENQUIRY\n------------------------------------\nName: ${formData.name}\nPhone: ${formData.phone || 'Not specified'}\nEmail: ${formData.email}\nTopic: ${formData.subject}\n\nMessage:\n${formData.message}\n------------------------------------\nPlease get back to me with details. Thank you.`;
+    const url = buildWhatsAppUrl(msg);
+    setWhatsappUrl(url);
+    try {
+      window.open(url, '_blank');
+    } catch (err) {}
     setSubmitted(true);
   };
 
@@ -57,6 +65,13 @@ export default function Contact() {
                   <p className="card-text">{center.description}</p>
 
                   <div style={{ background: 'var(--color-bg-alt)', borderRadius: 'var(--radius-sm)', padding: '18px', display: 'flex', flexDirection: 'column', gap: '10px', fontSize: '0.88rem' }}>
+                    {center.rating && (
+                      <div style={{ display: 'inline-flex', alignItems: 'center', gap: '5px', background: '#fef3c7', color: '#92400e', padding: '3px 10px', borderRadius: '16px', fontSize: '0.78rem', fontWeight: 700, width: 'fit-content' }}>
+                        <Star size={13} fill="#f59e0b" color="#f59e0b" />
+                        <span>★ {center.rating}</span>
+                        <span>({center.reviewCount} Google reviews)</span>
+                      </div>
+                    )}
                     <div style={{ display: 'flex', alignItems: 'flex-start', gap: '10px' }}>
                       <MapPin size={16} color="var(--color-primary)" style={{ marginTop: '3px', flexShrink: 0 }} />
                       <span>{center.address}</span>
@@ -73,6 +88,30 @@ export default function Contact() {
                       <Clock size={16} color="var(--color-primary)" />
                       <span>{center.timings}</span>
                     </div>
+                    {center.directionsUrl && (
+                      <div style={{ marginTop: '8px', paddingTop: '10px', borderTop: '1px solid var(--color-border)', display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
+                        <a
+                          href={center.directionsUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="btn btn-outline btn-sm"
+                          style={{ display: 'inline-flex', alignItems: 'center', gap: '5px', fontSize: '0.8rem', padding: '5px 12px' }}
+                        >
+                          <Navigation size={13} /> Get Directions
+                        </a>
+                        {center.website && (
+                          <a
+                            href={center.website}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="btn btn-primary btn-sm"
+                            style={{ display: 'inline-flex', alignItems: 'center', gap: '5px', fontSize: '0.8rem', padding: '5px 12px' }}
+                          >
+                            <ExternalLink size={13} /> Official Website
+                          </a>
+                        )}
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
@@ -94,15 +133,40 @@ export default function Contact() {
               {submitted ? (
                 <div style={{ padding: '32px', textAlign: 'center', background: 'var(--color-bg-alt)', borderRadius: 'var(--radius-md)' }}>
                   <CheckCircle2 size={40} color="var(--color-primary)" style={{ margin: '0 auto 12px auto' }} />
-                  <h4 style={{ color: 'var(--color-primary)', marginBottom: '8px' }}>Message Received</h4>
-                  <p style={{ fontSize: '0.95rem' }}>
-                    Thank you, {formData.name}. Your inquiry has been noted for this demo.
+                  <h4 style={{ color: 'var(--color-primary)', marginBottom: '8px' }}>Enquiry Prepared for WhatsApp</h4>
+                  <p style={{ fontSize: '0.95rem', marginBottom: '20px' }}>
+                    Thank you, {formData.name}. Your message has been formatted to connect directly with our care team on WhatsApp.
                   </p>
+                  {whatsappUrl && (
+                    <div style={{ marginBottom: '20px' }}>
+                      <a
+                        href={whatsappUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="btn btn-primary"
+                        style={{
+                          background: '#25D366',
+                          borderColor: '#25D366',
+                          color: '#ffffff',
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: '8px'
+                        }}
+                      >
+                        <MessageCircle size={18} />
+                        <span>Send on WhatsApp ({CONTACT_INFO.whatsappNumber})</span>
+                        <ExternalLink size={14} />
+                      </a>
+                    </div>
+                  )}
                   <button
                     type="button"
                     className="btn btn-secondary btn-sm"
-                    style={{ marginTop: '16px' }}
-                    onClick={() => setSubmitted(false)}
+                    style={{ marginTop: '8px' }}
+                    onClick={() => {
+                      setSubmitted(false);
+                      setFormData({ name: '', email: '', phone: '', subject: 'General Inquiry', message: '' });
+                    }}
                   >
                     Send Another Note
                   </button>
@@ -199,58 +263,150 @@ export default function Contact() {
                 }}
               >
                 <div style={{ padding: '24px', borderBottom: '1px solid var(--color-border)' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--color-primary)', fontWeight: 700 }}>
-                    <MapPin size={20} color="var(--color-gold)" />
-                    <span>Regional Map & Directions</span>
-                  </div>
-                  <p style={{ fontSize: '0.85rem', margin: '4px 0 0 0' }}>
-                    Chikmagalur, Chikkolale & Bangalore Locations
-                  </p>
-                </div>
-
-                {/* Stylized Simulated Map Canvas */}
-                <div
-                  style={{
-                    position: 'relative',
-                    flex: 1,
-                    minHeight: '360px',
-                    background: 'linear-gradient(135deg, #e5efe9 0%, #d5e5dc 50%, #cadcd2 100%)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    padding: '24px'
-                  }}
-                >
-                  {/* Decorative Map Contour Lines & Location Pins */}
-                  <div
-                    style={{
-                      background: 'rgba(255, 255, 255, 0.94)',
-                      backdropFilter: 'blur(8px)',
-                      padding: '24px',
-                      borderRadius: 'var(--radius-md)',
-                      boxShadow: 'var(--shadow-lg)',
-                      maxWidth: '340px',
-                      textAlign: 'center',
-                      border: '1px solid var(--color-border)'
-                    }}
-                  >
-                    <div style={{ width: '48px', height: '48px', borderRadius: '50%', background: 'var(--color-primary)', color: 'var(--color-gold)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 12px auto' }}>
-                      <MapPin size={24} />
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '8px' }}>
+                    <div>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--color-primary)', fontWeight: 700 }}>
+                        <MapPin size={20} color="var(--color-gold)" />
+                        <span>Sparsha Health Care (Hospital)</span>
+                      </div>
+                      <p style={{ fontSize: '0.85rem', margin: '4px 0 0 0', color: 'var(--color-text-muted)' }}>
+                        Indira Gandhi Rd, next to Hotel Vishnu Delicacy, Joythinagar, Chikkamagaluru
+                      </p>
                     </div>
-                    <h4 style={{ color: 'var(--color-primary)', marginBottom: '6px' }}>
-                      Interactive Map Placeholder
-                    </h4>
-                    <p style={{ fontSize: '0.85rem', color: 'var(--color-text-muted)', marginBottom: '16px' }}>
-                      Easily embed Google Maps iframe or Mapbox API with actual coordinates for Chikmagalur and Bangalore facilities.
-                    </p>
-                    <div style={{ fontSize: '0.8rem', fontWeight: 600, color: 'var(--color-gold)' }}>
-                      📍 13.3161° N, 75.7720° E (Chikmagalur)
+                    <div style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', background: '#fef3c7', color: '#92400e', padding: '4px 10px', borderRadius: '16px', fontSize: '0.78rem', fontWeight: 700 }}>
+                      <Star size={13} fill="#f59e0b" color="#f59e0b" />
+                      <span>5.0</span>
+                      <span>(40 Google reviews)</span>
                     </div>
                   </div>
                 </div>
 
-                <div style={{ padding: '20px 24px', background: 'var(--color-bg-alt)', fontSize: '0.85rem', color: 'var(--color-text-muted)' }}>
-                  <strong>Travel Note:</strong> Chikkolale Retreat is situated 12 km from Chikmagalur town. Private transfers can be arranged from Bangalore International Airport (BLR) or Mangalore Airport (IXE).
+                {/* Google Maps Live Embed */}
+                <div style={{ position: 'relative', width: '100%', height: '360px', overflow: 'hidden', background: '#e5e7eb' }}>
+                  <iframe
+                    title="Sparsha Health Care Chikkamagaluru Google Map"
+                    src="https://maps.google.com/maps?q=Sparsha+Health+Care,+Indira+Gandhi+Rd,+next+to+Hotel+Vishnu+Delicacy,+Joythinagar,+Chikkamagaluru,+Karnataka+577101&t=&z=16&ie=UTF8&iwloc=&output=embed"
+                    style={{ width: '100%', height: '100%', border: 0 }}
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                  />
+                </div>
+
+                <div style={{ padding: '16px 24px', background: 'var(--color-bg-alt)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px', borderTop: '1px solid var(--color-border)' }}>
+                  <div style={{ fontSize: '0.85rem' }}>
+                    <div style={{ fontWeight: 600, color: 'var(--color-primary)' }}>Direct Hospital Desk:</div>
+                    <a href="tel:08262355225" style={{ color: 'var(--color-leaf)', fontWeight: 700, textDecoration: 'none' }}>
+                      📞 082623 55225
+                    </a>
+                  </div>
+
+                  <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                    <a
+                      href="https://www.google.com/maps/search/?api=1&query=Sparsha+Health+Care+Indira+Gandhi+Rd+Joythinagar+Chikkamagaluru+Karnataka+577101"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="btn btn-outline btn-sm"
+                      style={{ display: 'inline-flex', alignItems: 'center', gap: '5px' }}
+                    >
+                      <Navigation size={13} /> Directions
+                    </a>
+                    <a
+                      href="https://sparsha-hospital.grexa.site/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="btn btn-primary btn-sm"
+                      style={{ display: 'inline-flex', alignItems: 'center', gap: '5px' }}
+                    >
+                      <ExternalLink size={13} /> Website
+                    </a>
+                  </div>
+                </div>
+
+                <div style={{ padding: '16px 24px', background: '#ffffff', fontSize: '0.82rem', color: 'var(--color-text-muted)', borderTop: '1px solid var(--color-border)' }}>
+                  <strong>Travel Note:</strong> Situated on Indira Gandhi Rd, next to Hotel Vishnu Delicacy in Joythinagar, Chikkamagaluru (577101). Chikkolale Wellness Resort is 12 km further into the hills.
+                </div>
+
+                {/* Official Social Media Channels */}
+                <div style={{ padding: '24px', borderTop: '1px solid var(--color-border)', background: '#ffffff' }}>
+                  <div style={{ fontWeight: 700, color: 'var(--color-primary)', fontSize: '0.92rem', marginBottom: '12px' }}>
+                    Connect on Official Channels
+                  </div>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                    <a
+                      href="https://www.youtube.com/@DrSarjasHealthtips"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        padding: '10px 14px',
+                        background: '#fef2f2',
+                        borderRadius: 'var(--radius-sm)',
+                        color: '#b91c1c',
+                        textDecoration: 'none',
+                        fontSize: '0.88rem',
+                        fontWeight: 600,
+                        border: '1px solid #fecaca'
+                      }}
+                    >
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                        <Youtube size={20} color="#dc2626" />
+                        <span>YouTube: @DrSarjasHealthtips</span>
+                      </div>
+                      <ExternalLink size={14} />
+                    </a>
+
+                    <a
+                      href="https://www.instagram.com/sparsha_hospital/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        padding: '10px 14px',
+                        background: '#fdf2f8',
+                        borderRadius: 'var(--radius-sm)',
+                        color: '#be185d',
+                        textDecoration: 'none',
+                        fontSize: '0.88rem',
+                        fontWeight: 600,
+                        border: '1px solid #fbcfe8'
+                      }}
+                    >
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                        <Instagram size={20} color="#db2777" />
+                        <span>Instagram: @sparsha_hospital</span>
+                      </div>
+                      <ExternalLink size={14} />
+                    </a>
+
+                    <a
+                      href="https://www.facebook.com/Sparshaintegrated/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        padding: '10px 14px',
+                        background: '#eff6ff',
+                        borderRadius: 'var(--radius-sm)',
+                        color: '#1d4ed8',
+                        textDecoration: 'none',
+                        fontSize: '0.88rem',
+                        fontWeight: 600,
+                        border: '1px solid #bfdbfe'
+                      }}
+                    >
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                        <Facebook size={20} color="#2563eb" />
+                        <span>Facebook: @Sparshaintegrated</span>
+                      </div>
+                      <ExternalLink size={14} />
+                    </a>
+                  </div>
                 </div>
               </div>
             </div>

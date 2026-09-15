@@ -8,7 +8,9 @@ import Button from '../components/Button';
 import Modal from '../components/Modal';
 import { services, healthConditions } from '../data/services';
 import { products } from '../data/products';
-import { ArrowRight, CheckCircle2, Award, Users, HeartHandshake, Sparkles, MapPin } from 'lucide-react';
+import { ArrowRight, CheckCircle2, Award, Users, HeartHandshake, Sparkles, MapPin, Star, BookOpen, Utensils } from 'lucide-react';
+import EventsSection from '../components/EventsSection';
+import { TESTIMONIALS } from '../data/testimonialsData';
 
 export default function Home() {
   const [selectedService, setSelectedService] = useState(null);
@@ -16,7 +18,7 @@ export default function Home() {
 
   return (
     <div className="home-page">
-      {/* SECTION 1: HERO */}
+      {/* SECTION 1: HERO WITH LIVE NOTICE BOARD */}
       <Hero
         title="Heal Naturally."
         subtitle="Live Completely."
@@ -24,6 +26,8 @@ export default function Home() {
         backgroundImage="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=2000&q=85"
         showCtas={true}
         showTrust={true}
+        showNoticeBoard={true}
+        showSocial={true}
       />
 
       {/* SECTION 2: INTRODUCTION */}
@@ -279,7 +283,7 @@ export default function Home() {
       <section
         className="section section-dark"
         style={{
-          backgroundImage: `linear-gradient(rgba(13, 34, 23, 0.9), rgba(20, 51, 36, 0.88)), url(https://images.unsplash.com/photo-1511497584788-87676104235f?auto=format&fit=crop&w=2000&q=85)`,
+          backgroundImage: `linear-gradient(rgba(24, 8, 48, 0.93), rgba(46, 16, 101, 0.90)), url(https://images.unsplash.com/photo-1511497584788-87676104235f?auto=format&fit=crop&w=2000&q=85)`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundAttachment: 'fixed'
@@ -300,7 +304,7 @@ export default function Home() {
           </div>
 
           <div className="cards-grid-3" style={{ marginBottom: '56px' }}>
-            <div className="card" style={{ background: 'rgba(255, 255, 255, 0.08)', backdropFilter: 'blur(10px)', borderColor: 'rgba(255, 255, 255, 0.15)' }}>
+            <div className="card" style={{ background: 'rgba(255, 255, 255, 0.08)', backdropFilter: 'blur(12px)', border: '1px solid rgba(168, 85, 247, 0.25)', borderTop: '3px solid #a855f7', boxShadow: '0 8px 32px rgba(15, 5, 30, 0.4)' }}>
               <div className="card-body">
                 <div className="service-icon-wrap" style={{ background: 'rgba(194, 155, 72, 0.2)', color: '#dfbe74' }}>
                   <Sparkles size={28} />
@@ -312,7 +316,7 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="card" style={{ background: 'rgba(255, 255, 255, 0.08)', backdropFilter: 'blur(10px)', borderColor: 'rgba(255, 255, 255, 0.15)' }}>
+            <div className="card" style={{ background: 'rgba(255, 255, 255, 0.08)', backdropFilter: 'blur(12px)', border: '1px solid rgba(168, 85, 247, 0.25)', borderTop: '3px solid #a855f7', boxShadow: '0 8px 32px rgba(15, 5, 30, 0.4)' }}>
               <div className="card-body">
                 <div className="service-icon-wrap" style={{ background: 'rgba(194, 155, 72, 0.2)', color: '#dfbe74' }}>
                   <MapPin size={28} />
@@ -324,7 +328,7 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="card" style={{ background: 'rgba(255, 255, 255, 0.08)', backdropFilter: 'blur(10px)', borderColor: 'rgba(255, 255, 255, 0.15)' }}>
+            <div className="card" style={{ background: 'rgba(255, 255, 255, 0.08)', backdropFilter: 'blur(12px)', border: '1px solid rgba(168, 85, 247, 0.25)', borderTop: '3px solid #a855f7', boxShadow: '0 8px 32px rgba(15, 5, 30, 0.4)' }}>
               <div className="card-body">
                 <div className="service-icon-wrap" style={{ background: 'rgba(194, 155, 72, 0.2)', color: '#dfbe74' }}>
                   <HeartHandshake size={28} />
@@ -342,11 +346,14 @@ export default function Home() {
               Explore Wellness Resort
             </Button>
             <Button to="/appointment?service=Resort%20Stay%20Enquiry&center=Sparsha%20Wellness%20Resort" variant="outline-white" size="lg">
-              Book Your Stay Experience
+              Enquire on WhatsApp
             </Button>
           </div>
         </div>
       </section>
+
+      {/* UPCOMING EVENTS & RETREATS SECTION */}
+      <EventsSection />
 
       {/* SECTION 7: HEALTHCARE / CONDITIONS */}
       <section className="section">
@@ -386,25 +393,440 @@ export default function Home() {
         </div>
       </section>
 
-      {/* SECTION 8: SHOP PREVIEW */}
+      {/* SECTION 8: DR. SARJA'S FORMULATIONS & SHOP PREVIEW */}
       <section className="section section-alt">
         <div className="container">
           <SectionTitle
-            eyebrow="Shustha Herbal Remedies"
-            title="Bring Wellness Home"
-            subtitle="Explore Shustha Herbal Remedies — clean botanical formulations crafted to complement your daily wellness routine."
+            eyebrow="Dr. Sarja’s Formulations & Herbal Apothecary"
+            title="Bring Natural Healing Home"
+            subtitle="Explore Dr. Sarja’s flagship clinical herbal powders and authentic Western Ghats remedies crafted for everyday vitality."
           />
 
-          <div className="cards-grid-3" style={{ marginBottom: '48px' }}>
-            {products.slice(0, 3).map((product) => (
-              <ProductCard key={product.id} product={product} />
-            ))}
+          {/* Dr. Sarja's Featured Duo Spotlight Card Grid */}
+          <div style={{ marginBottom: '56px' }}>
+            <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: 'var(--color-primary)', color: 'var(--color-gold)', padding: '6px 16px', borderRadius: '20px', fontSize: '0.82rem', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '24px' }}>
+              <Sparkles size={16} /> Dr. Sarja's Flagship Formulations
+            </div>
+
+            <div className="cards-grid-2" style={{ gap: '28px' }}>
+              {/* Product 1: Dia-Sparsh */}
+              <div
+                className="card"
+                style={{
+                  background: '#ffffff',
+                  borderRadius: 'var(--radius-lg)',
+                  border: '2px solid #eab308',
+                  boxShadow: '0 10px 30px rgba(234, 179, 8, 0.12)',
+                  overflow: 'hidden',
+                  display: 'flex',
+                  flexDirection: 'column'
+                }}
+              >
+                <div style={{ position: 'relative', height: '280px', overflow: 'hidden', background: '#fffbeb' }}>
+                  <span
+                    style={{
+                      position: 'absolute',
+                      top: '16px',
+                      left: '16px',
+                      background: '#b45309',
+                      color: '#ffffff',
+                      padding: '4px 12px',
+                      borderRadius: '20px',
+                      fontSize: '0.78rem',
+                      fontWeight: 700,
+                      letterSpacing: '0.04em',
+                      textTransform: 'uppercase',
+                      zIndex: 2
+                    }}
+                  >
+                    100% HERBAL • LIMITED OFFER
+                  </span>
+                  <span
+                    style={{
+                      position: 'absolute',
+                      top: '16px',
+                      right: '16px',
+                      background: 'rgba(255,255,255,0.92)',
+                      color: '#15803d',
+                      padding: '4px 10px',
+                      borderRadius: '12px',
+                      fontSize: '0.76rem',
+                      fontWeight: 700,
+                      zIndex: 2,
+                      border: '1px solid #bbf7d0'
+                    }}
+                  >
+                    FSSAI Certified
+                  </span>
+                  <Link to="/product/dr-sarja-dia-sparsh">
+                    <img
+                      src="/images/dia_sparsh.png"
+                      alt="Dr. Sarja's Dia-Sparsh Herbal Powder"
+                      style={{ width: '100%', height: '100%', objectFit: 'contain', padding: '16px', transition: 'transform 0.3s ease' }}
+                    />
+                  </Link>
+                </div>
+
+                <div className="card-body" style={{ display: 'flex', flexDirection: 'column', flex: 1, padding: '28px' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+                    <span style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--color-primary)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+                      Metabolic & Diabetes Care
+                    </span>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '3px', color: '#e5a93c', fontSize: '0.88rem', fontWeight: 700 }}>
+                      <Star size={15} fill="#e5a93c" stroke="#e5a93c" />
+                      <span>5.0 (84)</span>
+                    </div>
+                  </div>
+
+                  <h3 style={{ fontSize: '1.35rem', marginBottom: '6px', color: 'var(--color-primary)' }}>
+                    <Link to="/product/dr-sarja-dia-sparsh" style={{ color: 'inherit', textDecoration: 'none' }}>
+                      Dia-Sparsh Herbal Powder
+                    </Link>
+                  </h3>
+                  <div style={{ fontSize: '0.88rem', color: 'var(--color-leaf)', fontWeight: 600, marginBottom: '12px' }}>
+                    Formerly Jayla • Specially Designed for Healthy Disease-Free Life
+                  </div>
+
+                  <p style={{ fontSize: '0.92rem', color: 'var(--color-text-muted)', marginBottom: '16px', lineHeight: '1.6' }}>
+                    100% pure herbal formulation recommended for managing blood sugar balance, healthy blood pressure, and metabolic weight care. Zero added sugars or preservatives.
+                  </p>
+
+                  <ul style={{ listStyle: 'none', padding: 0, margin: '0 0 20px 0', display: 'flex', flexDirection: 'column', gap: '6px', fontSize: '0.86rem' }}>
+                    <li style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      <CheckCircle2 size={15} color="var(--color-leaf)" />
+                      <span>Recommended for Diabetes & Blood Sugar Care</span>
+                    </li>
+                    <li style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      <CheckCircle2 size={15} color="var(--color-leaf)" />
+                      <span>Supports Hypertension & Obesity Control</span>
+                    </li>
+                    <li style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      <CheckCircle2 size={15} color="var(--color-leaf)" />
+                      <span>Gurmar, Jamun Seed, Karela & Vijaysar extracts</span>
+                    </li>
+                  </ul>
+
+                  <div style={{ marginTop: 'auto', paddingTop: '16px', borderTop: '1px solid var(--color-border)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '12px' }}>
+                    <div>
+                      <div style={{ fontSize: '0.78rem', color: 'var(--color-text-muted)' }}>Net Wt. 200g Eco-Canister</div>
+                      <div style={{ fontSize: '1.4rem', fontWeight: 800, color: 'var(--color-primary)' }}>₹699</div>
+                    </div>
+                    <div style={{ display: 'flex', gap: '8px' }}>
+                      <Link
+                        to="/product/dr-sarja-dia-sparsh"
+                        className="btn btn-outline btn-sm"
+                      >
+                        Details
+                      </Link>
+                      <a
+                        href="https://wa.me/919986846635?text=Hello%20Dr.%20Sarja%27s%20Care%20Desk!%20I%20would%20like%20to%20order%20Dia-Sparsh%20Herbal%20Powder%20(Rs.%20699)."
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="btn btn-primary btn-sm"
+                        style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}
+                      >
+                        Order via WhatsApp
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Product 2: LimCoCool */}
+              <div
+                className="card"
+                style={{
+                  background: '#ffffff',
+                  borderRadius: 'var(--radius-lg)',
+                  border: '2px solid #84cc16',
+                  boxShadow: '0 10px 30px rgba(132, 204, 22, 0.12)',
+                  overflow: 'hidden',
+                  display: 'flex',
+                  flexDirection: 'column'
+                }}
+              >
+                <div style={{ position: 'relative', height: '280px', overflow: 'hidden', background: '#f7fee7' }}>
+                  <span
+                    style={{
+                      position: 'absolute',
+                      top: '16px',
+                      left: '16px',
+                      background: '#4d7c0f',
+                      color: '#ffffff',
+                      padding: '4px 12px',
+                      borderRadius: '20px',
+                      fontSize: '0.78rem',
+                      fontWeight: 700,
+                      letterSpacing: '0.04em',
+                      textTransform: 'uppercase',
+                      zIndex: 2
+                    }}
+                  >
+                    NEW PRODUCT LAUNCH
+                  </span>
+                  <span
+                    style={{
+                      position: 'absolute',
+                      top: '16px',
+                      right: '16px',
+                      background: 'rgba(255,255,255,0.92)',
+                      color: '#15803d',
+                      padding: '4px 10px',
+                      borderRadius: '12px',
+                      fontSize: '0.76rem',
+                      fontWeight: 700,
+                      zIndex: 2,
+                      border: '1px solid #bbf7d0'
+                    }}
+                  >
+                    FSSAI Certified
+                  </span>
+                  <Link to="/product/dr-sarja-limcocool">
+                    <img
+                      src="/images/limcocool.jpg"
+                      alt="Dr. Sarja's LimCoCool Pre-mix Juice Powder"
+                      style={{ width: '100%', height: '100%', objectFit: 'contain', padding: '16px', transition: 'transform 0.3s ease' }}
+                    />
+                  </Link>
+                </div>
+
+                <div className="card-body" style={{ display: 'flex', flexDirection: 'column', flex: 1, padding: '28px' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+                    <span style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--color-primary)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+                      Tangy Masala Wellness Drink
+                    </span>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '3px', color: '#e5a93c', fontSize: '0.88rem', fontWeight: 700 }}>
+                      <Star size={15} fill="#e5a93c" stroke="#e5a93c" />
+                      <span>4.9 (56)</span>
+                    </div>
+                  </div>
+
+                  <h3 style={{ fontSize: '1.35rem', marginBottom: '6px', color: 'var(--color-primary)' }}>
+                    <Link to="/product/dr-sarja-limcocool" style={{ color: 'inherit', textDecoration: 'none' }}>
+                      LimCoCool Pre-mix Juice Powder
+                    </Link>
+                  </h3>
+                  <div style={{ fontSize: '0.88rem', color: 'var(--color-leaf)', fontWeight: 600, marginBottom: '12px' }}>
+                    Refresh & Recharge Your Wellness • Instant Masala Drink
+                  </div>
+
+                  <p style={{ fontSize: '0.92rem', color: 'var(--color-text-muted)', marginBottom: '16px', lineHeight: '1.6' }}>
+                    Your daily dose of natural zest and comfort. A refreshing instant pre-mix juice powder combining zesty lemon Vitamin C boost, pure coconut hydration, and a digestive masala blend.
+                  </p>
+
+                  <ul style={{ listStyle: 'none', padding: 0, margin: '0 0 20px 0', display: 'flex', flexDirection: 'column', gap: '6px', fontSize: '0.86rem' }}>
+                    <li style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      <CheckCircle2 size={15} color="var(--color-leaf)" />
+                      <span>Vitamin C Boost with Zesty Lemon</span>
+                    </li>
+                    <li style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      <CheckCircle2 size={15} color="var(--color-leaf)" />
+                      <span>Natural Electrolyte Hydration from Coconut</span>
+                    </li>
+                    <li style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      <CheckCircle2 size={15} color="var(--color-leaf)" />
+                      <span>Ginger, Black Pepper, Rock Salt & Cumin Masala</span>
+                    </li>
+                  </ul>
+
+                  <div style={{ marginTop: 'auto', paddingTop: '16px', borderTop: '1px solid var(--color-border)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '12px' }}>
+                    <div>
+                      <div style={{ fontSize: '0.78rem', color: 'var(--color-text-muted)' }}>Net Wt. 200g Jar</div>
+                      <div style={{ fontSize: '1.4rem', fontWeight: 800, color: 'var(--color-primary)' }}>₹349</div>
+                    </div>
+                    <div style={{ display: 'flex', gap: '8px' }}>
+                      <Link
+                        to="/product/dr-sarja-limcocool"
+                        className="btn btn-outline btn-sm"
+                      >
+                        Details
+                      </Link>
+                      <a
+                        href="https://wa.me/919986846635?text=Hello%20Dr.%20Sarja%27s%20Care%20Desk!%20I%20would%20like%20to%20order%20LimCoCool%20Pre-mix%20Juice%20Powder%20(Rs.%20349)."
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="btn btn-primary btn-sm"
+                        style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}
+                      >
+                        Order via WhatsApp
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* More Botanical Remedies Grid */}
+          <div style={{ borderTop: '1px solid var(--color-border)', paddingTop: '36px', marginBottom: '20px' }}>
+            <h3 style={{ fontSize: '1.3rem', color: 'var(--color-primary)', marginBottom: '24px' }}>
+              More Classical Shustha Herbal Formulations
+            </h3>
+            <div className="cards-grid-3" style={{ marginBottom: '48px' }}>
+              {products.filter(p => !p.id.startsWith('dr-sarja-')).slice(0, 3).map((product) => (
+                <ProductCard key={product.id} product={product} />
+              ))}
+            </div>
           </div>
 
           <div style={{ textAlign: 'center' }}>
             <Button to="/shop" variant="gold" size="lg" icon={ArrowRight}>
-              View All Products
+              View All Apothecary Products ({products.length})
             </Button>
+          </div>
+        </div>
+      </section>
+
+      {/* SECTION 9: PATIENT TESTIMONIALS SPOTLIGHT */}
+      <section className="section" style={{ background: '#ffffff', padding: '96px 0' }}>
+        <div className="container">
+          <SectionTitle
+            eyebrow="Patient Stories & Recovery"
+            title="Real Experiences, Natural Healing"
+            subtitle="Read how patients across Karnataka resolved hormonal imbalances, digestive issues, and joint pain through our integrative clinical care."
+          />
+
+          <div className="cards-grid-3" style={{ marginBottom: '48px' }}>
+            {TESTIMONIALS.slice(0, 3).map((t) => (
+              <div
+                key={t.id}
+                className="card"
+                style={{
+                  background: 'var(--color-bg-alt)',
+                  borderRadius: 'var(--radius-md)',
+                  padding: '28px',
+                  border: '1px solid var(--color-border)',
+                  display: 'flex',
+                  flexDirection: 'column'
+                }}
+              >
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                    <img
+                      src={t.avatar}
+                      alt={t.name}
+                      style={{ width: '48px', height: '48px', borderRadius: '50%', objectFit: 'cover' }}
+                    />
+                    <div>
+                      <h4 style={{ margin: 0, fontSize: '1rem', color: 'var(--color-primary)' }}>{t.name}</h4>
+                      <span style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)' }}>{t.city}</span>
+                    </div>
+                  </div>
+                  <div style={{ display: 'flex', gap: '2px', color: '#e5a93c' }}>
+                    {[...Array(t.rating)].map((_, i) => (
+                      <Star key={i} size={14} fill="#e5a93c" stroke="#e5a93c" />
+                    ))}
+                  </div>
+                </div>
+
+                <div style={{ fontStyle: 'italic', fontWeight: 600, color: 'var(--color-primary)', fontSize: '0.95rem', lineHeight: '1.5', marginBottom: '12px' }}>
+                  "{t.quote}"
+                </div>
+
+                <p style={{ fontSize: '0.88rem', color: 'var(--color-text-main)', lineHeight: '1.6', marginBottom: '16px', flex: 1 }}>
+                  {t.review.length > 140 ? t.review.substring(0, 140) + '...' : t.review}
+                </p>
+
+                <div style={{ fontSize: '0.78rem', color: '#166534', background: '#f0fdf4', padding: '6px 10px', borderRadius: '6px', fontWeight: 600 }}>
+                  ✓ {t.conditionTreated}
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div style={{ textAlign: 'center' }}>
+            <Button to="/testimonials" variant="primary" size="lg" icon={ArrowRight}>
+              Read All Patient Reviews (4.9 ★)
+            </Button>
+          </div>
+        </div>
+      </section>
+
+      {/* SECTION 10: ARTICLES & DIET CHARTS RESOURCES SPOTLIGHT */}
+      <section className="section" style={{ background: 'var(--color-bg-alt)', padding: '96px 0' }}>
+        <div className="container">
+          <SectionTitle
+            eyebrow="Knowledge & Nutritional Guides"
+            title="Evidence-Backed Healing Wisdom"
+            subtitle="Access clinical diet charts, menstrual health guides, and Ayurvedic lifestyle protocols curated by our physicians."
+          />
+
+          <div className="cards-grid-2" style={{ gap: '32px' }}>
+            {/* Articles Highlight Card */}
+            <div
+              style={{
+                background: '#ffffff',
+                borderRadius: 'var(--radius-lg)',
+                padding: '40px 32px',
+                border: '1px solid var(--color-border)',
+                boxShadow: 'var(--shadow-sm)',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'space-between'
+              }}
+            >
+              <div>
+                <div style={{ width: '48px', height: '48px', borderRadius: '12px', background: 'var(--color-sage-mist)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--color-primary)', marginBottom: '18px' }}>
+                  <BookOpen size={24} />
+                </div>
+                <div style={{ color: 'var(--color-gold)', fontSize: '0.82rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '8px' }}>
+                  Clinical Articles
+                </div>
+                <h3 style={{ fontSize: '1.6rem', marginBottom: '12px', color: 'var(--color-primary)' }}>
+                  Menstrual Health, Gut Care & Botanical Science
+                </h3>
+                <p style={{ color: 'var(--color-text-main)', fontSize: '0.95rem', lineHeight: '1.65', marginBottom: '24px' }}>
+                  In-depth clinical protocols addressing dysmenorrhea, PMS, IBS, Panchakarma detoxification, and adrenal cortisol fatigue with holistic solutions.
+                </p>
+              </div>
+
+              <Link
+                to="/articles"
+                className="btn btn-primary"
+                style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', alignSelf: 'flex-start' }}
+              >
+                <span>Browse Clinical Articles</span>
+                <ArrowRight size={16} />
+              </Link>
+            </div>
+
+            {/* Diet Charts Highlight Card */}
+            <div
+              style={{
+                background: '#ffffff',
+                borderRadius: 'var(--radius-lg)',
+                padding: '40px 32px',
+                border: '1px solid var(--color-border)',
+                boxShadow: 'var(--shadow-sm)',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'space-between'
+              }}
+            >
+              <div>
+                <div style={{ width: '48px', height: '48px', borderRadius: '12px', background: 'rgba(194, 155, 72, 0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--color-gold)', marginBottom: '18px' }}>
+                  <Utensils size={24} />
+                </div>
+                <div style={{ color: 'var(--color-gold)', fontSize: '0.82rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '8px' }}>
+                  Nutritional Prescriptions
+                </div>
+                <h3 style={{ fontSize: '1.6rem', marginBottom: '12px', color: 'var(--color-primary)' }}>
+                  Therapeutic Diet Charts & Meal Routines
+                </h3>
+                <p style={{ color: 'var(--color-text-main)', fontSize: '0.95rem', lineHeight: '1.65', marginBottom: '24px' }}>
+                  Structured hour-by-hour Satvic meal plans for hormonal balance, digestive rekindling, joint ease, healthy weight detox, and calming deep sleep.
+                </p>
+              </div>
+
+              <Link
+                to="/diet-charts"
+                className="btn btn-primary"
+                style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', alignSelf: 'flex-start', borderRadius: 'var(--radius-full)' }}
+              >
+                <span>View Diet Charts (Printable)</span>
+                <ArrowRight size={16} />
+              </Link>
+            </div>
           </div>
         </div>
       </section>

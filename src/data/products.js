@@ -1,5 +1,51 @@
 export const products = [
   {
+    id: 'dr-sarja-dia-sparsh',
+    name: 'Dr. Sarja’s Dia-Sparsh Herbal Powder',
+    subtitle: 'Formerly Jayla • 100% Herbal Formula',
+    category: 'Herbal',
+    price: 699,
+    rating: 5.0,
+    reviewsCount: 84,
+    badge: 'Limited Offer • Viral Formula',
+    shortDescription: '100% pure herbal formulation specially designed for healthy disease-free life, supporting diabetes, hypertension & obesity care.',
+    image: '/images/dia_sparsh.png',
+    description: 'Dia-Sparsh (formerly Jayla) is Dr. Sarja’s acclaimed 100% herbal formula specially created for metabolic balance and a disease-free life. Widely recommended for individuals managing Diabetes, Hypertension, and Metabolic Obesity. Carefully compounded with traditional bio-actives with zero added sugars, artificial colours, or chemical preservatives.',
+    ingredients: 'Meshashringi / Gurmar (Gymnema sylvestre), Jamun Seed (Syzygium cumini), Karela / Bitter Gourd (Momordica charantia), Haridra / Curcumin (Curcuma longa), Vijaysar (Pterocarpus marsupium), Methi (Trigonella foenum-graecum), Guduchi (Tinospora cordifolia).',
+    usage: 'Mix 1 teaspoon (approx. 3-5g) with warm water or buttermilk twice daily, 30 minutes before meals, or as advised by your healthcare consultant.',
+    volume: 'Net Wt. 200g Eco-Canister',
+    features: [
+      '100% Herbal Active Bio-ingredients',
+      'Recommended for Diabetes & Blood Sugar Care',
+      'Supports Healthy Blood Pressure & Obesity Control',
+      'No Added Sugars, Colours or Preservatives',
+      'FSSAI Certified Clinically Trusted Blend'
+    ]
+  },
+  {
+    id: 'dr-sarja-limcocool',
+    name: 'Dr. Sarja’s LimCoCool Pre-mix Juice Powder',
+    subtitle: 'Tangy Masala Wellness Drink • Refresh & Recharge',
+    category: 'Digestive',
+    price: 349,
+    rating: 4.9,
+    reviewsCount: 56,
+    badge: 'Dr. Sarja’s Formulation',
+    shortDescription: 'Refreshing Ayurvedic pre-mix juice powder with zesty lemon, natural coconut hydration, and digestive masala herbs.',
+    image: '/images/limcocool.jpg',
+    description: 'Dr. Sarja’s LimCoCool is your daily dose of natural zest and comfort. A refreshing instant pre-mix juice powder combining the immune-boosting power of Vitamin C from zesty lemons, deep hydration from coconut water solids, and a classical digestive masala blend (ginger, black pepper, rock salt, and cumin). Perfect for daily digestive wellness, summer cooling, and instant rejuvenation.',
+    ingredients: 'Natural Lemon Extract (Citrus limon), Coconut Water Solids (Cocos nucifera), Shunthi (Zingiber officinale), Maricha / Black Pepper (Piper nigrum), Jeeraka (Cuminum cyminum), Saindhava Lavana (Himalayan Rock Salt), Mint (Mentha spicata).',
+    usage: 'Mix 1 to 2 tablespoons in a glass (200ml) of chilled or ambient water, stir well and consume. Close cap firmly after use & store below 24°C. Do not use wet spoon.',
+    volume: 'Net Wt. 200g Jar',
+    features: [
+      'Vitamin C Boost with Zesty Lemon',
+      'Natural Hydration from Coconut',
+      'Digestive Masala Wellness Blend',
+      'Instant Pre-mix for Easy Refreshment',
+      'Pure & Authentic • FSSAI Certified'
+    ]
+  },
+  {
     id: 'shustha-digestive-balance',
     name: 'Shustha Digestive Balance',
     subtitle: 'Triphala & Churna Formulation',

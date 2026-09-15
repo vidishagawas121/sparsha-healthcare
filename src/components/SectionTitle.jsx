@@ -1,4 +1,5 @@
 import React from 'react';
+import { Sparkles } from 'lucide-react';
 
 export default function SectionTitle({
   eyebrow,
@@ -11,7 +12,8 @@ export default function SectionTitle({
     <div className={`section-header ${align === 'left' ? 'text-left' : ''}`}>
       {eyebrow && (
         <div className="eyebrow-tag">
-          <span>🌿</span> {eyebrow}
+          <Sparkles size={14} style={{ color: light ? '#dfbe74' : 'var(--color-primary-light)' }} />
+          <span>{eyebrow}</span>
         </div>
       )}
       <h2 style={light ? { color: '#ffffff' } : {}}>{title}</h2>

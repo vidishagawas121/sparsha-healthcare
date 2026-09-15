@@ -16,6 +16,11 @@ import Cart from './pages/Cart';
 import Checkout from './pages/Checkout';
 import Appointment from './pages/Appointment';
 import Contact from './pages/Contact';
+import Admin from './pages/Admin';
+import Articles from './pages/Articles';
+import DietCharts from './pages/DietCharts';
+import Testimonials from './pages/Testimonials';
+import FloatingWhatsApp from './components/FloatingWhatsApp';
 
 // Scroll to top helper on page navigation
 function ScrollToTop() {
@@ -47,11 +52,16 @@ export default function App() {
               <Route path="/checkout" element={<Checkout />} />
               <Route path="/appointment" element={<Appointment />} />
               <Route path="/contact" element={<Contact />} />
+              <Route path="/articles" element={<Articles />} />
+              <Route path="/diet-charts" element={<DietCharts />} />
+              <Route path="/testimonials" element={<Testimonials />} />
+              <Route path="/admin" element={<Admin />} />
               {/* Fallback */}
               <Route path="*" element={<Home />} />
             </Routes>
           </main>
           <Footer />
+          <FloatingWhatsApp />
           <Toast />
         </div>
       </Router>
