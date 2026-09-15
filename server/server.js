@@ -311,6 +311,10 @@ app.get('/api/orders', (req, res) => {
   res.json(mockOrders);
 });
 
-app.listen(PORT, () => {
-  console.log(`[Sparsha Healthcare Backend] Running smoothly on port ${PORT}`);
-});
+if (process.env.NODE_ENV !== 'production' || !process.env.VERCEL) {
+  app.listen(PORT, () => {
+    console.log(`[Sparsha Healthcare Backend] Running smoothly on port ${PORT}`);
+  });
+}
+
+export default app;

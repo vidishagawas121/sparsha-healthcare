@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { getEvents, saveEvents, DEFAULT_EVENTS } from '../data/eventsData';
 import { buildWhatsAppUrl } from '../data/contactInfo';
+import { getInquiries, deleteInquiry, clearAllInquiries } from '../data/inquiriesService';
 import Button from '../components/Button';
 import { 
   ShieldCheck, 
@@ -27,7 +28,8 @@ import {
   Tag,
   Upload,
   Image as ImageIcon,
-  Link2
+  Link2,
+  RefreshCw
 } from 'lucide-react';
 
 export default function Admin() {
@@ -98,57 +100,38 @@ export default function Admin() {
     setEvents(data);
   }
 
+  const [isSyncingInquiries, setIsSyncingInquiries] = useState(false);
+
   async function loadRecentLogs() {
+    setIsSyncingInquiries(true);
     try {
-      let combinedInqs = [];
-      try {
-        const localInqs = JSON.parse(localStorage.getItem('sparsha_saved_inquiries') || '[]');
-        if (Array.isArray(localInqs)) {
-          combinedInqs = [...localInqs];
-        }
-      } catch (err) {}
-
-      const apptRes = await fetch('/api/appointments').catch(() => null);
-      if (apptRes && apptRes.ok) {
-        const apptData = await apptRes.json();
-        if (Array.isArray(apptData)) {
-          const knownIds = new Set(combinedInqs.map(i => i.id));
-          for (const item of apptData) {
-            if (!knownIds.has(item.id)) {
-              combinedInqs.push(item);
-              knownIds.add(item.id);
-            }
-          }
-        }
-      }
-
-      // Sort newest first
-      combinedInqs.sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0));
-      setInquiries(combinedInqs);
+      const list = await getInquiries();
+      setInquiries(list);
 
       const orderRes = await fetch('/api/orders').catch(() => null);
       if (orderRes && orderRes.ok) {
-        const orderData = await orderRes.json();
-        setOrders(orderData);
+        const text = await orderRes.text();
+        if (text && (text.startsWith('[') || text.startsWith('{'))) {
+          const orderData = JSON.parse(text);
+          setOrders(orderData);
+        }
       }
-    } catch (e) {}
+    } catch (e) {
+    } finally {
+      setIsSyncingInquiries(false);
+    }
   }
 
-  const handleDeleteInquiry = (id) => {
+  const handleDeleteInquiry = async (id) => {
     if (!window.confirm('Are you sure you want to remove this inquiry from the admin log?')) return;
-    const filtered = inquiries.filter(i => i.id !== id);
-    setInquiries(filtered);
-    try {
-      localStorage.setItem('sparsha_saved_inquiries', JSON.stringify(filtered));
-    } catch (e) {}
+    const updated = await deleteInquiry(id);
+    setInquiries(updated);
   };
 
-  const handleClearInquiries = () => {
-    if (!window.confirm('Are you sure you want to clear all inquiries from the local admin log?')) return;
+  const handleClearInquiries = async () => {
+    if (!window.confirm('Are you sure you want to clear all inquiries from the admin log?')) return;
+    await clearAllInquiries();
     setInquiries([]);
-    try {
-      localStorage.removeItem('sparsha_saved_inquiries');
-    } catch (e) {}
   };
 
   const handleLogin = async (e) => {
@@ -1221,27 +1204,51 @@ export default function Admin() {
                   Live record of appointment bookings and personalized diet chart consultation inquiries.
                 </p>
               </div>
-              {inquiries.length > 0 && (
+              <div style={{ display: 'flex', gap: '8px', alignItems: 'center', flexWrap: 'wrap' }}>
                 <button
                   type="button"
-                  onClick={handleClearInquiries}
+                  onClick={loadRecentLogs}
+                  disabled={isSyncingInquiries}
                   className="btn"
                   style={{
-                    background: '#fee2e2',
-                    color: '#991b1b',
-                    border: '1px solid #fecaca',
+                    background: '#f0fdf4',
+                    color: '#166534',
+                    border: '1px solid #bbf7d0',
                     padding: '6px 14px',
                     fontSize: '0.82rem',
+                    fontWeight: 600,
                     display: 'inline-flex',
                     alignItems: 'center',
                     gap: '6px',
                     cursor: 'pointer'
                   }}
                 >
-                  <Trash2 size={13} />
-                  <span>Clear All Log</span>
+                  <RefreshCw size={13} className={isSyncingInquiries ? 'animate-spin' : ''} />
+                  <span>{isSyncingInquiries ? 'Syncing...' : 'Refresh Live Log'}</span>
                 </button>
-              )}
+
+                {inquiries.length > 0 && (
+                  <button
+                    type="button"
+                    onClick={handleClearInquiries}
+                    className="btn"
+                    style={{
+                      background: '#fee2e2',
+                      color: '#991b1b',
+                      border: '1px solid #fecaca',
+                      padding: '6px 14px',
+                      fontSize: '0.82rem',
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '6px',
+                      cursor: 'pointer'
+                    }}
+                  >
+                    <Trash2 size={13} />
+                    <span>Clear All Log</span>
+                  </button>
+                )}
+              </div>
             </div>
 
             {inquiries.length === 0 ? (

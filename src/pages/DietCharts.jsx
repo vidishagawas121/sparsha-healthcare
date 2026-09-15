@@ -5,6 +5,7 @@ import {
   CONTACT_INFO, 
   generateWhatsAppDietEnquiryUrl 
 } from '../data/contactInfo';
+import { saveInquiry } from '../data/inquiriesService';
 import { 
   CheckCircle2, 
   MessageCircle, 
@@ -152,23 +153,10 @@ export default function DietCharts() {
       createdAt: new Date().toISOString()
     };
 
-    // 1. GUARANTEED ADMIN PERSISTENCE: Save locally to Admin inquiries store
+    // 1. GUARANTEED MULTI-TIER PERSISTENCE (Local, Cloud Sync & Backend)
     try {
       localStorage.setItem('sparsha_diet_lead', JSON.stringify(formData));
-      const existingInqs = JSON.parse(localStorage.getItem('sparsha_saved_inquiries') || '[]');
-      const updatedInqs = [newInquiry, ...existingInqs.filter(i => i.id !== newInquiry.id && i.email !== formData.email)];
-      localStorage.setItem('sparsha_saved_inquiries', JSON.stringify(updatedInqs));
-    } catch (err) {
-      // offline safe
-    }
-
-    // 2. DISPATCH TO BACKEND ADMIN ENDPOINT (Always saved regardless of WhatsApp action)
-    try {
-      await fetch('/api/appointments', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(newInquiry)
-      }).catch(() => {});
+      await saveInquiry(newInquiry);
     } catch (err) {
       // offline safe
     }
