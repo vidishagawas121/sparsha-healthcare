@@ -1221,7 +1221,7 @@ export default function Admin() {
 
         {/* TAB 3: ORDERS LOG */}
         {activeTab === 'orders' && (
-          <div style={{ background: '#ffffff', padding: '32px', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)' }}>
+          <div className="admin-card-box">
             <h3 style={{ marginBottom: '16px' }}>Dispensary Product Orders Log</h3>
             <p style={{ color: 'var(--color-text-muted)', fontSize: '0.9rem', marginBottom: '24px' }}>
               Shows product checkout submissions dispatched to WhatsApp.

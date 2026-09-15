@@ -169,37 +169,43 @@ export default function Appointment() {
               <p style={{ color: '#166534', fontWeight: 600, fontSize: '1.05rem', marginBottom: '14px' }}>
                 If WhatsApp did not open automatically, tap below to send your request:
               </p>
-              <a
-                href={whatsappUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn btn-primary"
-                style={{
-                  background: '#25D366',
-                  borderColor: '#25D366',
-                  color: '#ffffff',
-                  fontSize: '1.05rem',
-                  padding: '14px 28px',
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '10px',
-                  boxShadow: '0 4px 14px rgba(37, 211, 102, 0.4)'
-                }}
-              >
-                <MessageCircle size={22} />
-                <span>Open WhatsApp & Send Enquiry</span>
-                <ExternalLink size={16} />
-              </a>
+              <div style={{ marginBottom: '28px' }}>
+                <a
+                  href={whatsappUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn btn-primary"
+                  style={{
+                    background: '#25D366',
+                    borderColor: '#25D366',
+                    color: '#ffffff',
+                    fontSize: '1.02rem',
+                    padding: '14px 20px',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '10px',
+                    maxWidth: '100%',
+                    width: '100%',
+                    boxSizing: 'border-box',
+                    boxShadow: '0 4px 14px rgba(37, 211, 102, 0.4)'
+                  }}
+                >
+                  <MessageCircle size={20} />
+                  <span>Open WhatsApp & Send Enquiry</span>
+                  <ExternalLink size={16} />
+                </a>
+              </div>
               <div style={{ marginTop: '10px', fontSize: '0.85rem', color: '#15803d' }}>
                 Connecting with Sparsha Healthcare ({CONTACT_INFO.whatsappNumber})
               </div>
             </div>
 
-            <div style={{ background: 'var(--color-bg-alt)', borderRadius: 'var(--radius-md)', padding: '24px', textAlign: 'left', marginBottom: '32px', border: '1px solid var(--color-border)' }}>
+            <div style={{ background: 'var(--color-bg-alt)', borderRadius: 'var(--radius-md)', padding: '20px 16px', textAlign: 'left', marginBottom: '32px', border: '1px solid var(--color-border)' }}>
               <h4 style={{ marginBottom: '16px', color: 'var(--color-primary)', borderBottom: '1px solid var(--color-border)', paddingBottom: '8px' }}>
                 Request Summary Details:
               </h4>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '14px', fontSize: '0.92rem' }}>
+              <div className="request-summary-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '14px', fontSize: '0.92rem' }}>
                 <div>
                   <span style={{ color: 'var(--color-text-muted)', display: 'block' }}>Client:</span>
                   <strong>{submittedData.name}</strong>
@@ -269,10 +275,10 @@ export default function Appointment() {
 
       <section className="section">
         <div className="container" style={{ maxWidth: '840px' }}>
-          <div style={{ background: '#ffffff', padding: '44px 38px', borderRadius: 'var(--radius-lg)', border: '1px solid var(--color-border)', boxShadow: 'var(--shadow-md)' }}>
+          <div className="appointment-form-box">
             
             {/* Inquiry Type Tabs */}
-            <div style={{ display: 'flex', gap: '12px', marginBottom: '32px', background: 'var(--color-bg-alt)', padding: '6px', borderRadius: '30px' }}>
+            <div className="inquiry-type-tabs" style={{ display: 'flex', gap: '10px', marginBottom: '32px', background: 'var(--color-bg-alt)', padding: '6px', borderRadius: '30px' }}>
               <button
                 type="button"
                 onClick={() => setInquiryType('service')}
@@ -533,12 +539,14 @@ export default function Appointment() {
                   disabled={isSubmitting}
                   style={{
                     width: '100%',
+                    maxWidth: '100%',
+                    boxSizing: 'border-box',
                     background: '#25D366',
                     color: '#ffffff',
                     border: 'none',
                     borderRadius: 'var(--radius-sm)',
-                    padding: '16px 24px',
-                    fontSize: '1.08rem',
+                    padding: '16px 20px',
+                    fontSize: '1.05rem',
                     fontWeight: 700,
                     cursor: 'pointer',
                     display: 'flex',
@@ -550,7 +558,7 @@ export default function Appointment() {
                   }}
                 >
                   <Send size={18} />
-                  <span>{isSubmitting ? 'Formatting WhatsApp Message...' : 'Send Enquiry on WhatsApp'}</span>
+                  <span>{isSubmitting ? 'Formatting Message...' : 'Send Enquiry on WhatsApp'}</span>
                 </button>
               </div>
 

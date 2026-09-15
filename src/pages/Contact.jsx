@@ -121,7 +121,7 @@ export default function Contact() {
           {/* Split: Contact Form + Stylized Map Placeholder */}
           <div className="split-grid">
             {/* Contact Form */}
-            <div style={{ background: '#ffffff', padding: '40px', borderRadius: 'var(--radius-lg)', border: '1px solid var(--color-border)', boxShadow: 'var(--shadow-md)' }}>
+            <div className="contact-form-box" style={{ background: '#ffffff', borderRadius: 'var(--radius-lg)', border: '1px solid var(--color-border)', boxShadow: 'var(--shadow-md)' }}>
               <div className="eyebrow-tag" style={{ marginBottom: '10px' }}>
                 <MessageSquare size={14} /> Send a Message
               </div>
@@ -131,7 +131,7 @@ export default function Contact() {
               </p>
 
               {submitted ? (
-                <div style={{ padding: '32px', textAlign: 'center', background: 'var(--color-bg-alt)', borderRadius: 'var(--radius-md)' }}>
+                <div style={{ padding: '32px 20px', textAlign: 'center', background: 'var(--color-bg-alt)', borderRadius: 'var(--radius-md)' }}>
                   <CheckCircle2 size={40} color="var(--color-primary)" style={{ margin: '0 auto 12px auto' }} />
                   <h4 style={{ color: 'var(--color-primary)', marginBottom: '8px' }}>Enquiry Prepared for WhatsApp</h4>
                   <p style={{ fontSize: '0.95rem', marginBottom: '20px' }}>
@@ -150,11 +150,15 @@ export default function Contact() {
                           color: '#ffffff',
                           display: 'inline-flex',
                           alignItems: 'center',
-                          gap: '8px'
+                          justifyContent: 'center',
+                          gap: '8px',
+                          maxWidth: '100%',
+                          width: '100%',
+                          boxSizing: 'border-box'
                         }}
                       >
                         <MessageCircle size={18} />
-                        <span>Send on WhatsApp ({CONTACT_INFO.whatsappNumber})</span>
+                        <span>Send on WhatsApp</span>
                         <ExternalLink size={14} />
                       </a>
                     </div>

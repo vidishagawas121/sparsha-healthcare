@@ -127,7 +127,7 @@ export default function Retreat() {
                       block
                       icon={ArrowRight}
                     >
-                      Enquire for {prog.title}
+                      Enquire for Program
                     </Button>
                   </div>
                 </div>

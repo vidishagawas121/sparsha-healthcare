@@ -254,7 +254,7 @@ export default function Checkout() {
         <form onSubmit={handleWhatsAppOrderSubmit}>
           <div className="checkout-grid">
             {/* Left: Customer & Shipping Details Form */}
-            <div style={{ background: '#ffffff', padding: '36px', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', boxShadow: 'var(--shadow-sm)' }}>
+            <div className="checkout-form-box" style={{ background: '#ffffff', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', boxShadow: 'var(--shadow-sm)' }}>
               <h3 style={{ marginBottom: '20px', borderBottom: '1px solid var(--color-border)', paddingBottom: '12px' }}>
                 1. Delivery & Contact Details
               </h3>
@@ -456,12 +456,14 @@ export default function Checkout() {
                   disabled={isSubmitting}
                   style={{
                     width: '100%',
+                    maxWidth: '100%',
+                    boxSizing: 'border-box',
                     background: '#25D366',
                     color: '#ffffff',
                     border: 'none',
                     borderRadius: 'var(--radius-sm)',
                     padding: '16px 20px',
-                    fontSize: '1.08rem',
+                    fontSize: '1.05rem',
                     fontWeight: 700,
                     cursor: 'pointer',
                     display: 'flex',
@@ -473,7 +475,7 @@ export default function Checkout() {
                   }}
                 >
                   <Send size={18} />
-                  <span>{isSubmitting ? 'Formatting WhatsApp Order...' : 'Send Order on WhatsApp'}</span>
+                  <span>{isSubmitting ? 'Formatting Order...' : 'Send Order on WhatsApp'}</span>
                 </button>
 
                 <div style={{ marginTop: '16px', fontSize: '0.78rem', color: 'rgba(255, 255, 255, 0.65)' }}>

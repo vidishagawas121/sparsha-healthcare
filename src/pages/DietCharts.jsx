@@ -253,6 +253,7 @@ export default function DietCharts() {
               </p>
               <button
                 type="button"
+                className="btn"
                 onClick={() => handleWhatsAppDietRequest(currentChart)}
                 style={{
                   background: '#25D366',
@@ -260,17 +261,20 @@ export default function DietCharts() {
                   border: 'none',
                   borderRadius: 'var(--radius-sm)',
                   padding: '14px 28px',
-                  fontSize: '1.05rem',
+                  fontSize: '1.02rem',
                   fontWeight: 700,
                   cursor: 'pointer',
                   display: 'inline-flex',
                   alignItems: 'center',
+                  justifyContent: 'center',
                   gap: '10px',
-                  boxShadow: '0 4px 14px rgba(37, 211, 102, 0.4)'
+                  boxShadow: '0 4px 14px rgba(37, 211, 102, 0.4)',
+                  maxWidth: '100%',
+                  boxSizing: 'border-box'
                 }}
               >
                 <MessageCircle size={20} />
-                <span>Request Custom Diet Consultation on WhatsApp</span>
+                <span>Request Custom Diet on WhatsApp</span>
                 <ExternalLink size={16} />
               </button>
             </div>

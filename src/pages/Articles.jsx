@@ -342,25 +342,30 @@ export default function Articles() {
               </p>
               <button
                 type="button"
+                className="btn"
                 onClick={() => handleConsultWhatsApp(activeArticle)}
                 style={{
                   background: '#25D366',
                   color: '#ffffff',
                   border: 'none',
                   borderRadius: 'var(--radius-sm)',
-                  padding: '12px 24px',
-                  fontSize: '1rem',
+                  padding: '12px 20px',
+                  fontSize: '0.98rem',
                   fontWeight: 700,
                   cursor: 'pointer',
                   display: 'inline-flex',
                   alignItems: 'center',
-                  gap: '10px',
-                  boxShadow: '0 4px 14px rgba(37, 211, 102, 0.4)'
+                  justifyContent: 'center',
+                  gap: '8px',
+                  boxShadow: '0 4px 14px rgba(37, 211, 102, 0.4)',
+                  maxWidth: '100%',
+                  width: '100%',
+                  boxSizing: 'border-box'
                 }}
               >
-                <MessageCircle size={20} />
-                <span>Consult Doctor on WhatsApp about this Condition</span>
-                <ExternalLink size={16} />
+                <MessageCircle size={18} />
+                <span>Consult Doctor on WhatsApp</span>
+                <ExternalLink size={15} />
               </button>
             </div>
           </div>

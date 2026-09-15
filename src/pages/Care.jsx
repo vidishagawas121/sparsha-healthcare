@@ -131,7 +131,7 @@ export default function Care() {
               block
               onClick={() => setSelectedService(null)}
             >
-              Enquire About {selectedService.title} via WhatsApp
+              Book Consultation via WhatsApp
             </Button>
           </div>
         )}
@@ -165,7 +165,7 @@ export default function Care() {
               block
               onClick={() => setSelectedCondition(null)}
             >
-              Consult On {selectedCondition.title}
+              Book Consultation for Condition
             </Button>
           </div>
         )}

@@ -863,7 +863,7 @@ export default function Home() {
               block
               onClick={() => setSelectedService(null)}
             >
-              Book {selectedService.title} Consultation
+              Book Service Consultation
             </Button>
           </div>
         )}
@@ -897,7 +897,7 @@ export default function Home() {
               block
               onClick={() => setSelectedCondition(null)}
             >
-              Schedule an Assessment for {selectedCondition.title}
+              Schedule Health Assessment
             </Button>
           </div>
         )}

@@ -72,37 +72,39 @@ export default function Cart() {
                   </div>
                 </div>
 
-                <div className="quantity-stepper">
-                  <button
-                    className="stepper-btn"
-                    onClick={() => updateQuantity(item.id, -1)}
-                    aria-label="Decrease quantity"
-                  >
-                    -
-                  </button>
-                  <div className="stepper-value">{item.quantity}</div>
-                  <button
-                    className="stepper-btn"
-                    onClick={() => updateQuantity(item.id, 1)}
-                    aria-label="Increase quantity"
-                  >
-                    +
-                  </button>
-                </div>
-
-                <div style={{ textAlign: 'right' }}>
-                  <div style={{ fontFamily: 'var(--font-serif)', fontSize: '1.25rem', fontWeight: 700, color: 'var(--color-primary)', marginBottom: '8px' }}>
-                    ₹{item.price * item.quantity}
+                <div className="cart-item-actions">
+                  <div className="quantity-stepper">
+                    <button
+                      className="stepper-btn"
+                      onClick={() => updateQuantity(item.id, -1)}
+                      aria-label="Decrease quantity"
+                    >
+                      -
+                    </button>
+                    <div className="stepper-value">{item.quantity}</div>
+                    <button
+                      className="stepper-btn"
+                      onClick={() => updateQuantity(item.id, 1)}
+                      aria-label="Increase quantity"
+                    >
+                      +
+                    </button>
                   </div>
-                  <button
-                    type="button"
-                    onClick={() => removeFromCart(item.id)}
-                    style={{ background: 'none', border: 'none', color: '#b94a48', cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: '4px', fontSize: '0.82rem' }}
-                    aria-label={`Remove ${item.name} from cart`}
-                  >
-                    <Trash2 size={14} />
-                    <span>Remove</span>
-                  </button>
+
+                  <div style={{ textAlign: 'right' }}>
+                    <div style={{ fontFamily: 'var(--font-serif)', fontSize: '1.25rem', fontWeight: 700, color: 'var(--color-primary)', marginBottom: '8px' }}>
+                      ₹{item.price * item.quantity}
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => removeFromCart(item.id)}
+                      style={{ background: 'none', border: 'none', color: '#b94a48', cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: '4px', fontSize: '0.82rem' }}
+                      aria-label={`Remove ${item.name} from cart`}
+                    >
+                      <Trash2 size={14} />
+                      <span>Remove</span>
+                    </button>
+                  </div>
                 </div>
               </div>
             ))}

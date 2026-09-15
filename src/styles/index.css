@@ -227,6 +227,9 @@ button, input, select, textarea {
   transition: all var(--transition-normal);
   text-align: center;
   white-space: nowrap;
+  max-width: 100%;
+  box-sizing: border-box;
+  text-decoration: none;
 }
 
 .btn:active {
@@ -1706,6 +1709,10 @@ button, input, select, textarea {
   object-fit: cover;
 }
 
+.cart-item-actions {
+  display: contents;
+}
+
 .cart-summary-card {
   background: #ffffff;
   border-radius: var(--radius-md);
@@ -1777,6 +1784,28 @@ button, input, select, textarea {
   }
 }
 
+.checkout-grid {
+  display: grid;
+  grid-template-columns: 1fr 420px;
+  gap: 36px;
+}
+
+.contact-form-box {
+  padding: 40px;
+}
+
+.checkout-form-box {
+  padding: 36px;
+}
+
+.appointment-form-box {
+  background: #ffffff;
+  padding: 40px;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-md);
+}
+
 .floating-whatsapp-container a {
   animation: pulseWhatsApp 2.2s infinite;
 }
@@ -1816,6 +1845,26 @@ button, input, select, textarea {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 20px;
+}
+
+/* Checkout & Contact Layouts */
+.checkout-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 32px;
+  align-items: start;
+}
+
+.contact-form-box,
+.checkout-form-box,
+.appointment-form-box {
+  background: #ffffff;
+  padding: 38px;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-sm);
+  width: 100%;
+  box-sizing: border-box;
 }
 
 /* Modal Component */
@@ -2204,33 +2253,103 @@ button, input, select, textarea {
     width: 100%;
     justify-content: center;
   }
+  .btn, button.btn, a.btn {
+    white-space: normal !important;
+    word-break: break-word !important;
+    text-align: center !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    line-height: 1.35 !important;
+  }
   .btn-lg {
-    padding: 13px 20px;
-    font-size: 0.95rem;
+    padding: 12px 18px !important;
+    font-size: 0.92rem !important;
+  }
+  .btn-sm {
+    padding: 8px 14px !important;
+    font-size: 0.8rem !important;
   }
   .cart-item-row {
-    grid-template-columns: 70px 1fr;
-    gap: 14px;
+    grid-template-columns: 70px 1fr !important;
+    gap: 14px !important;
+    padding: 16px !important;
   }
   .cart-item-actions {
-    grid-column: 1 / -1;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    grid-column: 1 / -1 !important;
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    width: 100% !important;
+    margin-top: 10px !important;
   }
-  .footer-top-grid {
-    grid-template-columns: minmax(0, 1fr);
-    gap: 32px;
+  .checkout-grid {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 24px !important;
   }
-  .footer-bottom {
-    flex-direction: column;
-    text-align: center;
-    gap: 12px;
+  .contact-form-box,
+  .checkout-form-box,
+  .appointment-form-box,
+  .success-screen-card,
+  .diet-chart-container {
+    padding: 20px 16px !important;
+  }
+  .inquiry-type-tabs {
+    flex-direction: column !important;
+    gap: 8px !important;
+    border-radius: var(--radius-md) !important;
+    padding: 6px !important;
+  }
+  .inquiry-type-tabs button {
+    width: 100% !important;
+    border-radius: var(--radius-sm) !important;
+    padding: 11px 14px !important;
+    font-size: 0.88rem !important;
   }
   .modal-dialog {
-    padding: 24px 16px;
-    margin: 12px;
-    max-width: calc(100% - 24px);
+    padding: 20px 16px !important;
+    margin: 10px !important;
+    max-width: calc(100% - 20px) !important;
+    border-radius: var(--radius-md) !important;
+  }
+  .modal-dialog .btn,
+  .modal-dialog button {
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    white-space: normal !important;
+    word-break: break-word !important;
+  }
+  .product-gallery-main {
+    height: 300px !important;
+    max-height: 45vh !important;
+  }
+  .product-info-tabs {
+    padding: 20px 16px !important;
+    margin-top: 36px !important;
+  }
+  .diet-schedule-row {
+    grid-template-columns: 1fr !important;
+    gap: 10px !important;
+    padding: 16px !important;
+  }
+  .diet-foods-grid {
+    grid-template-columns: 1fr !important;
+    gap: 20px !important;
+  }
+  .request-summary-grid {
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+  }
+  .notice-modal-actions {
+    flex-direction: column !important;
+    width: 100% !important;
+  }
+  .notice-modal-actions .btn,
+  .notice-modal-actions button,
+  .notice-modal-actions a {
+    width: 100% !important;
+    justify-content: center !important;
+    box-sizing: border-box !important;
   }
   .floating-whatsapp-container {
     bottom: 16px;
