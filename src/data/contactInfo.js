@@ -35,8 +35,12 @@ export function buildWhatsAppUrl(message, phoneNumber = CONTACT_INFO.whatsappRaw
 /**
  * Generates WhatsApp URL for a complete Product Order from Checkout
  */
-export function generateWhatsAppOrderUrl(formData, cartItems, subtotal, orderId) {
+export function generateWhatsAppOrderUrl(formData, cartItems, subtotal, orderId, courierData = {}) {
   const addressLine = [formData.address, formData.city, formData.pincode].filter(Boolean).join(', ');
+  const courierCharge = courierData.courierCharge ?? 100;
+  const courierName = courierData.courierName || 'Standard Courier (1 Box)';
+  const totalAmount = (subtotal || 0) + courierCharge;
+  const totalBoxes = cartItems.reduce((sum, item) => sum + (item.quantity || 1), 0);
 
   const itemsList = cartItems
     .map((item, index) => `${index + 1}. ${item.name} x ${item.quantity} = Rs. ${item.price * item.quantity}`)
@@ -56,13 +60,18 @@ Email: ${formData.email}
 Delivery Address:
 ${addressLine}
 
-Items Ordered:
+Items Ordered (${totalBoxes} ${totalBoxes === 1 ? 'box' : 'boxes'}):
 ${itemsList}
 
 ------------------------------------
-Total Amount Due: Rs. ${subtotal}
+Items Subtotal: Rs. ${subtotal}
+Mandatory Courier Charge: Rs. ${courierCharge} (${courierName})
+Total Payable: Rs. ${totalAmount}
+
 Payment Method: Direct WhatsApp Confirmation (UPI / NetBanking / COD)
 ${formData.notes ? `\nSpecial Notes:\n${formData.notes}\n` : ''}
+Note: Courier charge is calculated as per parcel box weight (Rs. 100 for 1 box, Rs. 150 for 2-3 boxes, Rs. 200 for 4+ boxes). Final parcel dispatch receipt and tracking ID will be confirmed in this chat.
+
 Please confirm my order and share payment and dispatch instructions. Thank you.`;
 
   return buildWhatsAppUrl(message);

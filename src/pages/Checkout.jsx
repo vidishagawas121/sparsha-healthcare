@@ -12,12 +12,24 @@ import {
   Send, 
   PackageCheck,
   Truck,
+  Info,
   ExternalLink
 } from 'lucide-react';
 
 export default function Checkout() {
   const navigate = useNavigate();
-  const { cartItems, subtotal, clearCart } = useCart();
+  const { 
+    cartItems, 
+    subtotal, 
+    clearCart,
+    selectedCourierId,
+    setSelectedCourierId,
+    selectedCourierOption,
+    courierCharge,
+    totalAmount,
+    COURIER_OPTIONS,
+    itemCount
+  } = useCart();
 
   const [formData, setFormData] = useState({
     fullName: '',
@@ -66,7 +78,12 @@ export default function Checkout() {
     setIsSubmitting(true);
 
     const orderId = `SP-2026-${Math.floor(1000 + Math.random() * 9000)}`;
-    const waUrl = generateWhatsAppOrderUrl(formData, cartItems, subtotal, orderId);
+    const courierData = {
+      courierCharge,
+      courierName: selectedCourierOption.name,
+      totalAmount
+    };
+    const waUrl = generateWhatsAppOrderUrl(formData, cartItems, subtotal, orderId, courierData);
     setWhatsappRedirectUrl(waUrl);
 
     try {
@@ -77,7 +94,10 @@ export default function Checkout() {
         body: JSON.stringify({
           customer: formData,
           items: cartItems,
-          total: subtotal,
+          subtotal: subtotal,
+          courierCharge: courierCharge,
+          courierOption: selectedCourierOption.name,
+          total: totalAmount,
           paymentMethod: 'WhatsApp Direct Dispatch'
         })
       }).catch(() => {});
@@ -100,7 +120,10 @@ export default function Checkout() {
         orderId,
         customer: formData,
         items: [...cartItems],
-        total: subtotal,
+        subtotal: subtotal,
+        courierCharge: courierCharge,
+        courierOption: selectedCourierOption.name,
+        total: totalAmount,
         date: new Date().toLocaleDateString('en-IN', {
           day: 'numeric',
           month: 'long',
@@ -133,7 +156,7 @@ export default function Checkout() {
             </h1>
 
             <p style={{ fontSize: '1.1rem', color: 'var(--color-text-muted)', marginBottom: '16px' }}>
-              Thank you, <strong>{completedOrder.customer.fullName}</strong>. Your order has been pre-formatted for Sparsha Healthcare's dispensary team.
+              Thank you, <strong>{completedOrder.customer.fullName}</strong>. Your order and courier dispatch details have been pre-formatted for Sparsha Healthcare's dispensary team.
             </p>
 
             <div className="order-id-badge" style={{ display: 'inline-block', marginBottom: '24px' }}>
@@ -182,13 +205,21 @@ export default function Checkout() {
                 <span>{completedOrder.customer.city} ({completedOrder.customer.pincode})</span>
               </div>
               <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px', borderBottom: '1px solid var(--color-border)', paddingBottom: '8px' }}>
+                <span style={{ fontWeight: 600 }}>Items Subtotal:</span>
+                <span>₹{completedOrder.subtotal}</span>
+              </div>
+              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px', borderBottom: '1px solid var(--color-border)', paddingBottom: '8px' }}>
+                <span style={{ fontWeight: 600 }}>Courier Delivery:</span>
+                <span style={{ color: 'var(--color-primary)', fontWeight: 600 }}>₹{completedOrder.courierCharge} ({completedOrder.courierOption})</span>
+              </div>
+              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px', borderBottom: '1px solid var(--color-border)', paddingBottom: '8px' }}>
                 <span style={{ fontWeight: 600 }}>Order Method:</span>
                 <span style={{ color: '#128C7E', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '6px' }}>
                   <MessageCircle size={15} /> WhatsApp Direct Order
                 </span>
               </div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '1.15rem', fontWeight: 700, color: 'var(--color-primary)', paddingTop: '4px' }}>
-                <span>Total Order Value:</span>
+              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '1.25rem', fontWeight: 700, color: 'var(--color-primary)', paddingTop: '4px' }}>
+                <span>Total Payable:</span>
                 <span>₹{completedOrder.total}</span>
               </div>
             </div>
@@ -247,149 +278,239 @@ export default function Checkout() {
             Product Order & WhatsApp Dispatch
           </h1>
           <p style={{ color: 'var(--color-text-muted)', fontSize: '1.05rem' }}>
-            Provide your delivery details below. Submitting will automatically format your order and connect you directly to our dispensary on WhatsApp for instant confirmation.
+            Provide your delivery details below. Submitting will automatically calculate courier charges and connect you directly to our dispensary on WhatsApp for instant order & tracking confirmation.
           </p>
         </div>
 
         <form onSubmit={handleWhatsAppOrderSubmit}>
           <div className="checkout-grid">
-            {/* Left: Customer & Shipping Details Form */}
-            <div className="checkout-form-box" style={{ background: '#ffffff', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', boxShadow: 'var(--shadow-sm)' }}>
-              <h3 style={{ marginBottom: '20px', borderBottom: '1px solid var(--color-border)', paddingBottom: '12px' }}>
-                1. Delivery & Contact Details
-              </h3>
-
-              <div className="form-group">
-                <label className="form-label" htmlFor="fullName">Full Name *</label>
-                <input
-                  type="text"
-                  id="fullName"
-                  name="fullName"
-                  className="form-control"
-                  placeholder="e.g. Ananditha Rao"
-                  value={formData.fullName}
-                  onChange={handleInputChange}
-                />
-                {errors.fullName && (
-                  <span style={{ color: '#b94a48', fontSize: '0.8rem', marginTop: '4px', display: 'block' }}>
-                    {errors.fullName}
-                  </span>
-                )}
-              </div>
-
-              <div className="form-grid-2">
-                <div className="form-group">
-                  <label className="form-label" htmlFor="phone">Mobile / WhatsApp Number *</label>
-                  <input
-                    type="tel"
-                    id="phone"
-                    name="phone"
-                    className="form-control"
-                    placeholder="10-digit mobile number"
-                    value={formData.phone}
-                    onChange={handleInputChange}
-                  />
-                  {errors.phone && (
-                    <span style={{ color: '#b94a48', fontSize: '0.8rem', marginTop: '4px', display: 'block' }}>
-                      {errors.phone}
-                    </span>
-                  )}
-                </div>
+            {/* Left Column: Delivery Details & Courier Options */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+              {/* Step 1: Customer & Shipping Details Form */}
+              <div className="checkout-form-box" style={{ background: '#ffffff', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', padding: '32px', boxShadow: 'var(--shadow-sm)' }}>
+                <h3 style={{ marginBottom: '20px', borderBottom: '1px solid var(--color-border)', paddingBottom: '12px' }}>
+                  1. Delivery & Contact Details
+                </h3>
 
                 <div className="form-group">
-                  <label className="form-label" htmlFor="email">Email Address *</label>
-                  <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    className="form-control"
-                    placeholder="name@example.com"
-                    value={formData.email}
-                    onChange={handleInputChange}
-                  />
-                  {errors.email && (
-                    <span style={{ color: '#b94a48', fontSize: '0.8rem', marginTop: '4px', display: 'block' }}>
-                      {errors.email}
-                    </span>
-                  )}
-                </div>
-              </div>
-
-              <div className="form-group">
-                <label className="form-label" htmlFor="address">Full Delivery Street Address *</label>
-                <textarea
-                  id="address"
-                  name="address"
-                  className="form-control"
-                  rows="3"
-                  placeholder="House/Apartment #, Street, Landmark, Area"
-                  value={formData.address}
-                  onChange={handleInputChange}
-                />
-                {errors.address && (
-                  <span style={{ color: '#b94a48', fontSize: '0.8rem', marginTop: '4px', display: 'block' }}>
-                    {errors.address}
-                  </span>
-                )}
-              </div>
-
-              <div className="form-grid-2">
-                <div className="form-group">
-                  <label className="form-label" htmlFor="city">City / Town *</label>
+                  <label className="form-label" htmlFor="fullName">Full Name *</label>
                   <input
                     type="text"
-                    id="city"
-                    name="city"
+                    id="fullName"
+                    name="fullName"
                     className="form-control"
-                    placeholder="e.g. Bangalore or Chikmagalur"
-                    value={formData.city}
+                    placeholder="e.g. Ananditha Rao"
+                    value={formData.fullName}
                     onChange={handleInputChange}
                   />
-                  {errors.city && (
+                  {errors.fullName && (
                     <span style={{ color: '#b94a48', fontSize: '0.8rem', marginTop: '4px', display: 'block' }}>
-                      {errors.city}
+                      {errors.fullName}
                     </span>
                   )}
+                </div>
+
+                <div className="form-grid-2">
+                  <div className="form-group">
+                    <label className="form-label" htmlFor="phone">Mobile / WhatsApp Number *</label>
+                    <input
+                      type="tel"
+                      id="phone"
+                      name="phone"
+                      className="form-control"
+                      placeholder="10-digit mobile number"
+                      value={formData.phone}
+                      onChange={handleInputChange}
+                    />
+                    {errors.phone && (
+                      <span style={{ color: '#b94a48', fontSize: '0.8rem', marginTop: '4px', display: 'block' }}>
+                        {errors.phone}
+                      </span>
+                    )}
+                  </div>
+
+                  <div className="form-group">
+                    <label className="form-label" htmlFor="email">Email Address *</label>
+                    <input
+                      type="email"
+                      id="email"
+                      name="email"
+                      className="form-control"
+                      placeholder="name@example.com"
+                      value={formData.email}
+                      onChange={handleInputChange}
+                    />
+                    {errors.email && (
+                      <span style={{ color: '#b94a48', fontSize: '0.8rem', marginTop: '4px', display: 'block' }}>
+                        {errors.email}
+                      </span>
+                    )}
+                  </div>
                 </div>
 
                 <div className="form-group">
-                  <label className="form-label" htmlFor="pincode">Postal Pincode *</label>
-                  <input
-                    type="text"
-                    id="pincode"
-                    name="pincode"
+                  <label className="form-label" htmlFor="address">Full Delivery Street Address *</label>
+                  <textarea
+                    id="address"
+                    name="address"
                     className="form-control"
-                    placeholder="e.g. 560038"
-                    value={formData.pincode}
+                    rows="3"
+                    placeholder="House/Apartment #, Street, Landmark, Area"
+                    value={formData.address}
                     onChange={handleInputChange}
                   />
-                  {errors.pincode && (
+                  {errors.address && (
                     <span style={{ color: '#b94a48', fontSize: '0.8rem', marginTop: '4px', display: 'block' }}>
-                      {errors.pincode}
+                      {errors.address}
                     </span>
                   )}
                 </div>
+
+                <div className="form-grid-2">
+                  <div className="form-group">
+                    <label className="form-label" htmlFor="city">City / Town *</label>
+                    <input
+                      type="text"
+                      id="city"
+                      name="city"
+                      className="form-control"
+                      placeholder="e.g. Bangalore or Chikmagalur"
+                      value={formData.city}
+                      onChange={handleInputChange}
+                    />
+                    {errors.city && (
+                      <span style={{ color: '#b94a48', fontSize: '0.8rem', marginTop: '4px', display: 'block' }}>
+                        {errors.city}
+                      </span>
+                    )}
+                  </div>
+
+                  <div className="form-group">
+                    <label className="form-label" htmlFor="pincode">Postal Pincode *</label>
+                    <input
+                      type="text"
+                      id="pincode"
+                      name="pincode"
+                      className="form-control"
+                      placeholder="e.g. 560038"
+                      value={formData.pincode}
+                      onChange={handleInputChange}
+                    />
+                    {errors.pincode && (
+                      <span style={{ color: '#b94a48', fontSize: '0.8rem', marginTop: '4px', display: 'block' }}>
+                        {errors.pincode}
+                      </span>
+                    )}
+                  </div>
+                </div>
+
+                <div className="form-group" style={{ marginBottom: 0 }}>
+                  <label className="form-label" htmlFor="notes">Special Delivery Instructions / Questions (Optional)</label>
+                  <input
+                    type="text"
+                    id="notes"
+                    name="notes"
+                    className="form-control"
+                    placeholder="e.g. Call before delivery, morning preferred"
+                    value={formData.notes}
+                    onChange={handleInputChange}
+                  />
+                </div>
               </div>
 
-              <div className="form-group" style={{ marginBottom: 0 }}>
-                <label className="form-label" htmlFor="notes">Special Delivery Instructions / Questions (Optional)</label>
-                <input
-                  type="text"
-                  id="notes"
-                  name="notes"
-                  className="form-control"
-                  placeholder="e.g. Call before delivery, morning preferred"
-                  value={formData.notes}
-                  onChange={handleInputChange}
-                />
+              {/* Step 2: Mandatory Courier Partner Selection */}
+              <div className="checkout-form-box" style={{ background: '#ffffff', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', padding: '32px', boxShadow: 'var(--shadow-sm)' }}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px', borderBottom: '1px solid var(--color-border)', paddingBottom: '12px' }}>
+                  <h3 style={{ margin: 0, display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <Truck size={20} color="var(--color-primary)" />
+                    2. Mandatory Courier & Parcel Charges *
+                  </h3>
+                  <span style={{ fontSize: '0.82rem', background: 'rgba(59, 20, 100, 0.1)', color: 'var(--color-primary)', padding: '4px 10px', borderRadius: '12px', fontWeight: 600 }}>
+                    Cart: {itemCount} {itemCount === 1 ? 'Box' : 'Boxes'}
+                  </span>
+                </div>
+
+                <p style={{ fontSize: '0.88rem', color: 'var(--color-text-muted)', marginBottom: '16px', lineHeight: '1.5' }}>
+                  Please confirm your mandatory courier dispatch tier below. Shipping charges are fixed per box/parcel weight:
+                </p>
+
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '12px', marginBottom: '20px' }}>
+                  {COURIER_OPTIONS.map((opt) => {
+                    const isSelected = selectedCourierId === opt.id;
+                    const isRecommended = (itemCount <= 1 && opt.id === 'single') ||
+                                          (itemCount >= 2 && itemCount <= 3 && opt.id === 'medium') ||
+                                          (itemCount >= 4 && opt.id === 'bulk');
+
+                    return (
+                      <label
+                        key={opt.id}
+                        style={{
+                          display: 'flex',
+                          alignItems: 'flex-start',
+                          justifyContent: 'space-between',
+                          padding: '16px',
+                          borderRadius: 'var(--radius-sm)',
+                          border: isSelected ? '2px solid var(--color-primary)' : '1px solid var(--color-border)',
+                          background: isSelected ? 'rgba(59, 20, 100, 0.04)' : '#ffffff',
+                          cursor: 'pointer',
+                          transition: 'all 0.2s ease',
+                          position: 'relative'
+                        }}
+                      >
+                        <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px' }}>
+                          <input
+                            type="radio"
+                            name="courierSelection"
+                            value={opt.id}
+                            checked={isSelected}
+                            onChange={() => setSelectedCourierId(opt.id)}
+                            style={{ accentColor: 'var(--color-primary)', marginTop: '4px', cursor: 'pointer', transform: 'scale(1.15)' }}
+                          />
+                          <div>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap', marginBottom: '4px' }}>
+                              <span style={{ fontWeight: 700, fontSize: '0.98rem', color: 'var(--color-text-main)' }}>
+                                {opt.name}
+                              </span>
+                              {isRecommended && (
+                                <span style={{ fontSize: '0.72rem', background: '#dcfce7', color: '#166534', padding: '2px 8px', borderRadius: '8px', fontWeight: 700 }}>
+                                  ✓ Recommended for your cart ({itemCount} {itemCount === 1 ? 'box' : 'boxes'})
+                                </span>
+                              )}
+                            </div>
+                            <div style={{ fontSize: '0.84rem', color: 'var(--color-text-muted)', lineHeight: '1.4' }}>
+                              {opt.description}
+                            </div>
+                          </div>
+                        </div>
+
+                        <div style={{ textAlign: 'right', flexShrink: 0, paddingLeft: '12px' }}>
+                          <div style={{ fontFamily: 'var(--font-serif)', fontSize: '1.2rem', fontWeight: 700, color: 'var(--color-primary)' }}>
+                            ₹{opt.price}
+                          </div>
+                          <span style={{ fontSize: '0.72rem', color: 'var(--color-gold)', fontWeight: 600 }}>
+                            {opt.boxLimit}
+                          </span>
+                        </div>
+                      </label>
+                    );
+                  })}
+                </div>
+
+                {/* Courier Partner Policy Callout */}
+                <div style={{ background: '#fefce8', border: '1px solid #fef08a', borderRadius: 'var(--radius-sm)', padding: '14px 16px', display: 'flex', gap: '12px', alignItems: 'flex-start' }}>
+                  <Info size={20} color="#ca8a04" style={{ flexShrink: 0, marginTop: '2px' }} />
+                  <div style={{ fontSize: '0.82rem', color: '#854d0e', lineHeight: '1.5' }}>
+                    <strong>Courier Partner Dispatch Notice:</strong> Courier is not free. Base courier is ₹100 for 1 box, ₹150 for 2–3 boxes, and ₹200 for 4+ boxes. When multiple boxes are booked by the same person, our logistics partner will verify final volumetric weight and send the official receipt & tracking link directly to your WhatsApp.
+                  </div>
+                </div>
               </div>
             </div>
 
-            {/* Right: Order Summary & WhatsApp Dispatch Card */}
+            {/* Right Column: Order Summary & WhatsApp Dispatch Card */}
             <div>
               <div style={{ background: '#ffffff', padding: '32px', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', marginBottom: '24px', boxShadow: 'var(--shadow-sm)' }}>
                 <h3 style={{ marginBottom: '16px', borderBottom: '1px solid var(--color-border)', paddingBottom: '12px' }}>
-                  2. Order Summary
+                  3. Order Summary
                 </h3>
                 {cartItems.map((item) => (
                   <div key={item.id} style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.9rem', marginBottom: '10px' }}>
@@ -400,18 +521,26 @@ export default function Checkout() {
                   </div>
                 ))}
 
-                <div className="summary-row" style={{ marginTop: '16px', borderTop: '1px solid var(--color-border)', paddingTop: '12px' }}>
-                  <span>Delivery</span>
-                  <span style={{ color: 'var(--color-sage)', fontWeight: 600 }}>FREE</span>
+                <div className="summary-row" style={{ marginTop: '16px', borderTop: '1px solid var(--color-border)', paddingTop: '12px', display: 'flex', justifyContent: 'space-between', fontSize: '0.92rem' }}>
+                  <span>Items Subtotal</span>
+                  <span style={{ fontWeight: 600 }}>₹{subtotal}</span>
                 </div>
 
-                <div className="summary-row total" style={{ marginTop: '12px' }}>
-                  <span>Total Amount</span>
-                  <span style={{ color: 'var(--color-primary)', fontSize: '1.4rem' }}>₹{subtotal}</span>
+                <div className="summary-row" style={{ marginTop: '8px', display: 'flex', justifyContent: 'space-between', fontSize: '0.92rem' }}>
+                  <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                    <Truck size={15} color="var(--color-primary)" />
+                    Courier Charges ({selectedCourierOption.shortName}):
+                  </span>
+                  <span style={{ color: 'var(--color-primary)', fontWeight: 700 }}>₹{courierCharge}</span>
+                </div>
+
+                <div className="summary-row total" style={{ marginTop: '16px', borderTop: '2px solid var(--color-border)', paddingTop: '14px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <span style={{ fontSize: '1.05rem', fontWeight: 700 }}>Total Payable</span>
+                  <span style={{ color: 'var(--color-primary)', fontSize: '1.45rem', fontWeight: 800 }}>₹{totalAmount}</span>
                 </div>
               </div>
 
-              {/* WHATSAPP ORDER DISPATCH CARD (Replaces QR Code logic) */}
+              {/* WHATSAPP ORDER DISPATCH CARD */}
               <div 
                 className="whatsapp-order-card"
                 style={{
@@ -433,7 +562,7 @@ export default function Checkout() {
                 </h3>
 
                 <p style={{ fontSize: '0.9rem', color: 'rgba(255, 255, 255, 0.85)', lineHeight: '1.55', marginBottom: '20px' }}>
-                  When you submit this form, your complete order breakdown and address will be automatically compiled and sent to our team at <strong>{CONTACT_INFO.whatsappNumber}</strong>.
+                  When you submit this form, your complete order breakdown with <strong>₹{courierCharge} courier charge</strong> will be compiled and sent to our apothecary team at <strong>{CONTACT_INFO.whatsappNumber}</strong>.
                 </p>
 
                 <div style={{ background: 'rgba(255, 255, 255, 0.08)', borderRadius: 'var(--radius-sm)', padding: '16px', textAlign: 'left', marginBottom: '24px', fontSize: '0.85rem' }}>
@@ -447,7 +576,7 @@ export default function Checkout() {
                   </div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                     <Truck size={16} color="#25D366" />
-                    <span>Express dispatch from Bangalore / Chikmagalur</span>
+                    <span>Express dispatch from Bangalore / Chikmagalur (Slip on WhatsApp)</span>
                   </div>
                 </div>
 
@@ -475,7 +604,7 @@ export default function Checkout() {
                   }}
                 >
                   <Send size={18} />
-                  <span>{isSubmitting ? 'Formatting Order...' : 'Send Order on WhatsApp'}</span>
+                  <span>{isSubmitting ? 'Formatting Order...' : `Send Order (₹${totalAmount}) on WhatsApp`}</span>
                 </button>
 
                 <div style={{ marginTop: '16px', fontSize: '0.78rem', color: 'rgba(255, 255, 255, 0.65)' }}>

@@ -286,13 +286,16 @@ app.get(['/api/appointments', '/api/inquiries'], (req, res) => {
 
 // Orders endpoint (WhatsApp order dispatch)
 app.post('/api/orders', (req, res) => {
-  const { customer, items, total, paymentMethod } = req.body;
+  const { customer, items, subtotal, courierCharge, courierOption, total, paymentMethod } = req.body;
   const orderId = `SP-2026-${Math.floor(1000 + Math.random() * 9000)}`;
   const newOrder = {
     orderId,
     customer,
     items,
-    total,
+    subtotal: subtotal || total,
+    courierCharge: courierCharge || 100,
+    courierOption: courierOption || 'Standard Courier (1 Box)',
+    total: total || ((subtotal || 0) + (courierCharge || 100)),
     paymentMethod: paymentMethod || 'WhatsApp Direct Dispatch',
     status: 'WhatsApp Dispatched',
     date: new Date().toISOString()

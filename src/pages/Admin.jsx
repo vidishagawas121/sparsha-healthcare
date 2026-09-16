@@ -1390,7 +1390,8 @@ export default function Admin() {
                       <th style={{ padding: '12px' }}>Customer</th>
                       <th style={{ padding: '12px' }}>Destination</th>
                       <th style={{ padding: '12px' }}>Items</th>
-                      <th style={{ padding: '12px' }}>Total</th>
+                      <th style={{ padding: '12px' }}>Courier</th>
+                      <th style={{ padding: '12px' }}>Total Amount</th>
                       <th style={{ padding: '12px' }}>Status</th>
                     </tr>
                   </thead>
@@ -1403,7 +1404,24 @@ export default function Admin() {
                         <td style={{ padding: '12px' }}>
                           {ord.items?.map(i => `${i.name} (x${i.quantity})`).join(', ')}
                         </td>
-                        <td style={{ padding: '12px', fontWeight: 700, color: 'var(--color-primary)' }}>₹{ord.total}</td>
+                        <td style={{ padding: '12px' }}>
+                          <div style={{ fontWeight: 600, color: 'var(--color-primary)' }}>
+                            ₹{ord.courierCharge || 100}
+                          </div>
+                          <small style={{ color: 'var(--color-text-muted)', fontSize: '0.75rem' }}>
+                            {ord.courierOption || 'Standard (1 Box)'}
+                          </small>
+                        </td>
+                        <td style={{ padding: '12px' }}>
+                          <div style={{ fontWeight: 700, color: 'var(--color-primary)', fontSize: '0.95rem' }}>
+                            ₹{ord.total}
+                          </div>
+                          {ord.subtotal && ord.subtotal !== ord.total && (
+                            <small style={{ color: 'var(--color-text-muted)', fontSize: '0.75rem' }}>
+                              (Subtotal: ₹{ord.subtotal})
+                            </small>
+                          )}
+                        </td>
                         <td style={{ padding: '12px' }}>
                           <span style={{ background: '#f0fdf4', color: '#166534', padding: '3px 8px', borderRadius: '10px', fontSize: '0.78rem', fontWeight: 600 }}>
                             {ord.status || 'WhatsApp Dispatched'}
