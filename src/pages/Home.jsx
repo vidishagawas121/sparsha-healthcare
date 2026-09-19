@@ -117,20 +117,20 @@ export default function Home() {
               </div>
             </div>
 
-            {/* CARD 2: Wellness Resort */}
+            {/* CARD 2: Wellness Resort / Retreat */}
             <div className="card">
               <div className="card-image-wrap">
                 <span className="card-badge">Pillar 02</span>
                 <img
-                  src="/images/pillar_retreat.jpg"
-                  alt="Sparsha Wellness Resort - Ayurvedic Rejuvenation"
+                  src="/images/retreat_corridor_walkway.jpg"
+                  alt="Sparsha Wellness Resort - Guest Residential Room Corridor with Traditional Wooden Veranda Seating"
                 />
               </div>
               <div className="card-body">
-                <div className="card-subtitle">Wellness Resort</div>
+                <div className="card-subtitle">Wellness Resort & Retreat</div>
                 <h3 className="card-title">Sparsha Wellness Resort</h3>
                 <p className="card-text">
-                  Personalized residential healing and nature stay programs surrounded by the serene coffee hills of Chikmagalur.
+                  A tranquil residential corridor with handcrafted wooden seating, cool tiled walkways, and serene courtyard views outside each therapy and guest suite at Pepper Peak Chikmagalur.
                 </p>
                 <div className="card-footer">
                   <Button to="/retreat" variant="secondary" size="sm" block icon={ArrowRight}>
